@@ -9,20 +9,29 @@ namespace assignmentDraft1
     {
         protected void Page_Load(object sender, EventArgs e)
         {
-            if (!IsPostBack && Request.Form["search_box"] != null)
+            if (!IsPostBack && Request.QueryString["query"] != null)
             {
-                string searchTerm = Request.Form["search_box"];
+                string searchTerm = Request.QueryString["query"];
 
-                string connectionString = ConfigurationManager.ConnectionStrings["YourConnectionStringName"].ConnectionString;
-                using (SqlConnection conn = new SqlConnection(connectionString))
+                string cs = ConfigurationManager.ConnectionStrings["dbConnection"].ConnectionString;
+                using (SqlConnection con = new SqlConnection(cs))
                 {
-                    string query = "SELECT * FROM Modules WHERE ModuleTitle LIKE @SearchTerm";
-                    SqlCommand cmd = new SqlCommand(query, conn);
+                    con.Open();
+
+                    SqlCommand cmd = new SqlCommand(
+                        @"SELECT 
+                      M.ModuleID,
+                      M.Title AS ModuleTitle, 
+                      Lec.FullName AS LecturerName
+                  FROM Modules M
+                  LEFT JOIN Lecturers Lec ON M.LecturerID = Lec.LecturerID
+                  WHERE M.Title LIKE @SearchTerm", con);
+
                     cmd.Parameters.AddWithValue("@SearchTerm", "%" + searchTerm + "%");
 
-                    SqlDataAdapter adapter = new SqlDataAdapter(cmd);
+                    SqlDataAdapter da = new SqlDataAdapter(cmd);
                     DataTable dt = new DataTable();
-                    adapter.Fill(dt);
+                    da.Fill(dt);
 
                     searchRepeater.DataSource = dt;
                     searchRepeater.DataBind();

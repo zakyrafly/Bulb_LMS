@@ -14,7 +14,7 @@
     <ItemTemplate>
         <div class="box">
             <h3><%# Eval("ModuleTitle") %></h3>
-            <p>Lecturer: <%# Eval("LecturerName") %></p>
+          <p>Lecturer: <%# Eval("LecturerName") %></p>
             <a href='lessons.aspx?moduleID=<%# Eval("ModuleID") %>' class="inline-btn">View Lessons</a>
         </div>
     </ItemTemplate>
