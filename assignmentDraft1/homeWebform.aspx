@@ -12,6 +12,7 @@
 
 </head>
 <body>
+    <form id="form1" runat="server">
 
 <header class="header">
    
@@ -19,10 +20,12 @@
 
       <a href="home.html" class="logo">Bulb</a>
 
-      <form action="searchResults.aspx" method="post" class="search-form">
-         <input type="text" name="search_box" required placeholder="search courses..." maxlength="100">
-         <button type="submit" class="fas fa-search"></button>
-      </form>
+<asp:Panel runat="server" CssClass="search-form">
+    <asp:TextBox ID="txtSearch" runat="server" CssClass="search-input" placeholder="Search courses..." MaxLength="100" />
+    <asp:Button ID="btnSearch" runat="server" CssClass="fas fa-search" OnClick="btnSearch_Click" Text="🔍" UseSubmitBehavior="false" />
+</asp:Panel>
+
+
 
       <div class="icons">
          <div id="menu-btn" class="fas fa-bars"></div>
@@ -253,6 +256,6 @@
 </footer>
 <script src="js/script.js"></script>
 
-   
+    </form>
 </body>
 </html>
