@@ -22,7 +22,9 @@
 
 <asp:Panel runat="server" CssClass="search-form">
     <asp:TextBox ID="txtSearch" runat="server" CssClass="search-input" placeholder="Search courses..." MaxLength="100" />
-    <asp:Button ID="btnSearch" runat="server" CssClass="fas fa-search" OnClick="btnSearch_Click" Text="🔍" UseSubmitBehavior="false" />
+    <asp:LinkButton ID="btnSearch" runat="server" CssClass="inline-btn search-btn" OnClick="btnSearch_Click">
+        <i class="fas fa-search"></i>
+    </asp:LinkButton>
 </asp:Panel>
 
 

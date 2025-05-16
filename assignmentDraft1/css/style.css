@@ -178,7 +178,7 @@ section{
    width: 50rem;
    border-radius: .5rem;
    background-color: var(--light-bg);
-   padding:1.5rem 2rem;
+   padding:0.5rem 2rem;
    display: flex;
    gap:2rem;
 
@@ -1454,3 +1454,4 @@ section{
    }
 
 }
+
