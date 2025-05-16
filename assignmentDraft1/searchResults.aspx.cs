@@ -38,5 +38,15 @@ namespace assignmentDraft1
                 }
             }
         }
+
+        protected void btnSearch_Click(object sender, EventArgs e)
+        {
+            string query = txtSearch.Text.Trim();
+            if (!string.IsNullOrEmpty(query))
+            {
+                // Redirect to search page with query string
+                Response.Redirect("searchResults.aspx?query=" + Server.UrlEncode(query));
+            }
+        }
     }
 }

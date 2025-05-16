@@ -12,29 +12,41 @@
 </head>
     <form id="form1" runat="server">
         <header class="header">
-            <section class="flex">
-                <a href="homeWebform.aspx" class="logo">Bulb</a>
-                <asp:Panel runat="server" CssClass="search-form">
-                    <asp:TextBox ID="txtSearch" runat="server" CssClass="search-input" placeholder="Search courses..." MaxLength="100" />
-                    <asp:Button ID="btnSearch" runat="server" CssClass="fas fa-search" Text="🔍" UseSubmitBehavior="false" />
-                </asp:Panel>
-                <div class="icons">
-                    <div id="menu-btn" class="fas fa-bars"></div>
-                    <div id="search-btn" class="fas fa-search"></div>
-                    <div id="user-btn" class="fas fa-user"></div>
-                    <div id="toggle-btn" class="fas fa-sun"></div>
-                </div>
-                <div class="profile">
-                    <img src="images/pic-1.jpg" class="image" alt="">
-                    <h3 class="name"><asp:Label ID="lblName" runat="server" Text="Zaky Rafly"></asp:Label></h3>
-                    <p class="role"><asp:Label ID="lblRole" runat="server" Text="student"></asp:Label></p>
-                    <a href="profile.aspx" class="btn">view profile</a>
-                    <div class="flex-btn">
-                        <a href="logout.aspx" class="option-btn">logout</a>
-                    </div>
-                </div>
-            </section>
-        </header>
+   
+   <section class="flex">
+
+      <a href="home.html" class="logo">Bulb</a>
+
+<asp:Panel runat="server" CssClass="search-form">
+    <asp:TextBox ID="txtSearch" runat="server" CssClass="search-input" placeholder="Search courses..." MaxLength="100" />
+    <asp:LinkButton ID="btnSearch" runat="server" CssClass="inline-btn search-btn" OnClick="btnSearch_Click">
+        <i class="fas fa-search"></i>
+    </asp:LinkButton>
+</asp:Panel>
+
+
+
+      <div class="icons">
+         <div id="menu-btn" class="fas fa-bars"></div>
+         <div id="search-btn" class="fas fa-search"></div>
+         <div id="user-btn" class="fas fa-user"></div>
+         <div id="toggle-btn" class="fas fa-sun"></div>
+      </div>
+
+      <div class="profile">
+   <img src="images/pic-1.jpg" class="image" alt="">
+   <h3 class="name"><asp:Label ID="lblName" runat="server" Text="Zaky Rafly"></asp:Label></h3>
+   <p class="role"><asp:Label ID="lblRole" runat="server" Text="student"></asp:Label></p>
+   <a href="profile.aspx" class="btn">view profile</a>
+   <div class="flex-btn">
+      <a href="logout.aspx" class="option-btn">logout</a>
+   </div>
+</div>
+
+
+   </section>
+
+</header>   
         <div class="side-bar">
             <div id="close-btn">
                 <i class="fas fa-times"></i>
