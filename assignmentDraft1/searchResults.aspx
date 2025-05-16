@@ -6,19 +6,25 @@
     <title>Search Results</title>
     <link rel="stylesheet" href="css/style.css">
 </head>
-<body>
-
-<h1>Search Results</h1>
-
-<asp:Repeater ID="searchRepeater" runat="server">
-    <ItemTemplate>
-        <div class="box">
-            <h3><%# Eval("ModuleTitle") %></h3>
-          <p>Lecturer: <%# Eval("LecturerName") %></p>
-            <a href='lessons.aspx?moduleID=<%# Eval("ModuleID") %>' class="inline-btn">View Lessons</a>
+<body class="no-sidebar">
+    <section>
+        <div class="heading">Search Results</div>
+        <div class="home-grid">
+            <div class="box-container">
+                <asp:Repeater ID="searchRepeater" runat="server">
+                    <ItemTemplate>
+                        <div class="box">
+                            <div class="title"><%# Eval("ModuleTitle") %></div>
+                            <div class="tutor">Lecturer: <%# Eval("LecturerName") %></div>
+                            <a href='lessons.aspx?moduleID=<%# Eval("ModuleID") %>' class="inline-btn">View Lessons</a>
+                        </div>
+                    </ItemTemplate>
+                </asp:Repeater>
+                <div id="noResults" runat="server" class="no-results" visible="false">
+                    No results found. Please try a different search.
+                </div>
+            </div>
         </div>
-    </ItemTemplate>
-</asp:Repeater>
-
+    </section>
 </body>
 </html>
