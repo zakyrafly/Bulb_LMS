@@ -57,3 +57,7 @@ C:\Users\LENOVO Legion Ryzen5\source\repos\assignmentDraft1\assignmentDraft1\obj
 C:\Users\LENOVO Legion Ryzen5\source\repos\assignmentDraft1\assignmentDraft1\obj\Debug\assignme.782A30E0.Up2Date
 C:\Users\LENOVO Legion Ryzen5\source\repos\assignmentDraft1\assignmentDraft1\obj\Debug\assignmentDraft1.dll
 C:\Users\LENOVO Legion Ryzen5\source\repos\assignmentDraft1\assignmentDraft1\obj\Debug\assignmentDraft1.pdb
+C:\Users\Stanley\source\repos\zakyrafly\assignmentDraft1copy\assignmentDraft1\obj\Debug\assignmentDraft1.csproj.AssemblyReference.cache
+C:\Users\Stanley\source\repos\zakyrafly\assignmentDraft1copy\assignmentDraft1\obj\Debug\assignmentDraft1.csproj.CoreCompileInputs.cache
+C:\Users\Stanley\source\repos\zakyrafly\assignmentDraft1copy\assignmentDraft1\obj\Debug\assignmentDraft1.dll
+C:\Users\Stanley\source\repos\zakyrafly\assignmentDraft1copy\assignmentDraft1\obj\Debug\assignmentDraft1.pdb
