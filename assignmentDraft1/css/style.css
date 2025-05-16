@@ -178,7 +178,7 @@ section{
    width: 50rem;
    border-radius: .5rem;
    background-color: var(--light-bg);
-   padding:1.5rem 2rem;
+   padding:0.5rem 2rem;
    display: flex;
    gap:2rem;
 
@@ -354,7 +354,7 @@ section{
    display: grid;
    grid-template-columns: repeat(auto-fit, 27.5rem);
    gap:1.5rem;
-   justify-content: center;
+   justify-content: start;
    align-items: flex-start;
 }
 
@@ -1446,6 +1446,7 @@ section{
 
    .home-grid .box-container{
       grid-template-columns: 1fr;
+      justify-content: start;
    }
 
    .about .row .image img{
@@ -1453,3 +1454,4 @@ section{
    }
 
 }
+
