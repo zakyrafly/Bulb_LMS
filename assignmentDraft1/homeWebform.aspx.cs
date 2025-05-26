@@ -18,7 +18,6 @@ namespace assignmentDraft1
             {
                 if (Session["email"] == null)
                 {
-                    // Not logged in, redirect to login page
                     Response.Redirect("loginWebform.aspx");
                 }
                 else
@@ -38,21 +37,18 @@ namespace assignmentDraft1
                         {
                             lblName.Text = reader["Name"].ToString();
                             lblRole.Text = reader["Role"].ToString();
-
                             lblSidebarName.Text = reader["Name"].ToString();
                             lblSidebarRole.Text = reader["Role"].ToString();
 
-                            // Get userID from DB to use in course content loading
                             reader.Close();
 
                             SqlCommand getUserIdCmd = new SqlCommand("SELECT UserID FROM Users WHERE Username = @Email", con);
                             getUserIdCmd.Parameters.AddWithValue("@Email", email);
                             int userId = (int)getUserIdCmd.ExecuteScalar();
 
-                            LoadCourseContent(userId); // Call this after setting labels
+                            LoadCourseContent(userId);
+                            LoadAssignments(userId); // Add this line
                         }
-
-
                     }
                 }
             }
@@ -70,6 +66,48 @@ namespace assignmentDraft1
         }
 
 
+        private void LoadAssignments(int userId)
+        {
+            string cs = ConfigurationManager.ConnectionStrings["dbConnection"].ConnectionString;
+            using (SqlConnection con = new SqlConnection(cs))
+            {
+                con.Open();
+
+                // Get assignments for the user's enrolled courses
+                SqlCommand cmd = new SqlCommand(@"
+            SELECT TOP 5
+                a.AssignmentID,
+                a.Title,
+                a.DueDate,
+                a.MaxPoints,
+                c.CourseName,
+                CASE 
+                    WHEN s.SubmissionID IS NOT NULL THEN 'Submitted'
+                    WHEN a.DueDate < GETDATE() THEN 'Overdue'
+                    ELSE 'Pending'
+                END AS Status,
+                s.SubmissionDate,
+                g.PointsEarned
+            FROM Assignments a
+            JOIN Modules m ON a.ModuleID = m.ModuleID
+            JOIN Courses c ON m.CourseID = c.CourseID
+            JOIN UserCourses uc ON c.CourseID = uc.CourseID
+            LEFT JOIN AssignmentSubmissions s ON a.AssignmentID = s.AssignmentID AND s.UserID = @UserID
+            LEFT JOIN AssignmentGrades g ON s.SubmissionID = g.SubmissionID
+            WHERE uc.UserID = @UserID AND a.IsActive = 1
+            ORDER BY a.DueDate ASC", con);
+
+                cmd.Parameters.AddWithValue("@UserID", userId);
+
+                SqlDataAdapter da = new SqlDataAdapter(cmd);
+                DataTable dt = new DataTable();
+                da.Fill(dt);
+
+                // Bind to a repeater (you'll need to add this to your ASPX)
+                assignmentRepeater.DataSource = dt;
+                assignmentRepeater.DataBind();
+            }
+        }
 
 
 

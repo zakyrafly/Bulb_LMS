@@ -77,9 +77,9 @@
 
 <section class="home-grid">
 
-   <h1 class="heading">Timeline</h1>
+    <h1 class="heading">Timeline</h1>"
 
-<div class="box timeline-box">
+<div class="timeline-box box">
    <div class="timeline-filters">
       <select class="box select">
          <option>All</option>
@@ -97,17 +97,36 @@
       </select>
 
       <input type="text" class="box search-input" placeholder="Search by activity type or name" oninput="handleSearchPlaceholder(this)">
-
    </div>
 
    <p class="updated-date" id="current-date">Updated: </p>
 
-   <div class="assignment-card box">
-      <h3 class="title">Assignment: Final Project Report</h3>
-      <p class="likes">Course: <span>Web Development</span></p>
-      <p class="likes">Due: <span>April 30, 2025</span></p>
-      <a href="#" class="inline-btn">View Assignment</a>
-   </div>
+   <!-- Dynamic Assignments Repeater -->
+   <asp:Repeater ID="assignmentRepeater" runat="server">
+       <ItemTemplate>
+           <div class="assignment-card box">
+               <h3 class="title">Assignment: <%# Eval("Title") %></h3>
+               <p class="likes">Course: <span><%# Eval("CourseName") %></span></p>
+               <p class="likes">Due: <span><%# Eval("DueDate", "{0:MMM dd, yyyy}") %></span></p>
+               <p class="likes">Status: 
+                   <span class='<%# Eval("Status").ToString().ToLower() == "overdue" ? "status-overdue" : 
+                                   Eval("Status").ToString().ToLower() == "submitted" ? "status-submitted" : "status-pending" %>'>
+                       <%# Eval("Status") %>
+                   </span>
+               </p>
+               <%# Eval("PointsEarned") != DBNull.Value ? 
+                   "<p class='likes'>Grade: <span>" + Eval("PointsEarned") + "/" + Eval("MaxPoints") + "</span></p>" : "" %>
+               <a href='assignment-details.aspx?assignmentID=<%# Eval("AssignmentID") %>' class="inline-btn">View Assignment</a>
+           </div>
+       </ItemTemplate>
+   </asp:Repeater>
+   
+   <!-- Show message if no assignments -->
+   <asp:Panel ID="noAssignmentsPanel" runat="server" Visible="false">
+       <div class="assignment-card box">
+           <p>No assignments at this time.</p>
+       </div>
+   </asp:Panel>
 </div>
 
 </section>
