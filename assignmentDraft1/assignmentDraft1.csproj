@@ -71,6 +71,7 @@
     <Content Include="App_Data\Database1_log.ldf">
       <DependentUpon>Database1.mdf</DependentUpon>
     </Content>
+    <Content Include="assignment-details.aspx" />
     <Content Include="courses.html" />
     <Content Include="home.html" />
     <Content Include="homeWebform.aspx" />
@@ -86,6 +87,13 @@
     <Content Include="loginWebform.aspx" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="assignment-details.aspx.cs">
+      <DependentUpon>assignment-details.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="assignment-details.aspx.designer.cs">
+      <DependentUpon>assignment-details.aspx</DependentUpon>
+    </Compile>
     <Compile Include="homeWebform.aspx.cs">
       <DependentUpon>homeWebform.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
