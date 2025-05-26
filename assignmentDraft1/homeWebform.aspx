@@ -77,7 +77,7 @@
 
 <section class="home-grid">
 
-    <h1 class="heading">Timeline</h1>"
+    <h1 class="heading">Timeline</h1>
 
 <div class="timeline-box box">
    <div class="timeline-filters">
