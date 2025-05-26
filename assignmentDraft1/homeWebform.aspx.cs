@@ -10,10 +10,10 @@ using System.Web.UI.WebControls;
 
 namespace assignmentDraft1
 {
-	public partial class homeWebform : System.Web.UI.Page
-	{
-		protected void Page_Load(object sender, EventArgs e)
-		{
+    public partial class homeWebform : System.Web.UI.Page
+    {
+        protected void Page_Load(object sender, EventArgs e)
+        {
             if (!IsPostBack)
             {
                 if (Session["email"] == null)
@@ -60,25 +60,17 @@ namespace assignmentDraft1
 
         protected void btnSearch_Click(object sender, EventArgs e)
         {
-            string searchTerm = txtSearch.Text.Trim();
-            string connStr = ConfigurationManager.ConnectionStrings["dbConnection"].ConnectionString;
+            string query = txtSearch.Text.Trim();
 
-            using (SqlConnection conn = new SqlConnection(connStr))
+            if (!string.IsNullOrEmpty(query))
             {
-                string query = "SELECT * FROM Modules WHERE Title LIKE @SearchTerm";
-                SqlCommand cmd = new SqlCommand(query, conn);
-                cmd.Parameters.AddWithValue("@SearchTerm", "%" + searchTerm + "%");
-
-                SqlDataAdapter adapter = new SqlDataAdapter(cmd);
-                DataTable dt = new DataTable();
-                adapter.Fill(dt);
-
-
-
-                searchRepeater.DataSource = dt;
-                searchRepeater.DataBind();
+                // Redirect to search page with query string
+                Response.Redirect("searchResults.aspx?query=" + Server.UrlEncode(query));
             }
         }
+
+
+
 
 
         private void LoadCourseContent(int userId)
