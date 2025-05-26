@@ -28,9 +28,11 @@ namespace assignmentDraft1
                 return;
             }
 
+            // Load user info on every page load (including postbacks)
+            LoadUserInfo();
+
             if (!IsPostBack)
             {
-                LoadUserInfo();
                 LoadAssignmentDetails();
                 CheckSubmissionStatus();
             }
@@ -56,15 +58,6 @@ namespace assignmentDraft1
                     lblRole.Text = reader["Role"].ToString();
                     lblSidebarName.Text = reader["Name"].ToString();
                     lblSidebarRole.Text = reader["Role"].ToString();
-
-                    // Debug: Check if userId is valid
-                    if (userId <= 0)
-                    {
-                        lblMessage.Text = "Error: Invalid User ID. Please contact administrator.";
-                        lblMessage.ForeColor = System.Drawing.Color.Red;
-                        pnlSubmissionForm.Visible = false;
-                        return;
-                    }
                 }
                 else
                 {
@@ -196,16 +189,11 @@ namespace assignmentDraft1
                         lblStatusBadge.CssClass = "status-badge status-submitted";
                     }
 
-                    // Hide submission form if already submitted (unless it's a draft)
+                    // Hide submission form if already submitted
                     string status = reader["Status"].ToString();
                     if (status == "Submitted")
                     {
                         pnlSubmissionForm.Visible = false;
-                    }
-                    else
-                    {
-                        // If it's a draft, load the existing content
-                        txtSubmission.Text = reader["SubmissionText"]?.ToString() ?? "";
                     }
                 }
                 else
@@ -226,15 +214,10 @@ namespace assignmentDraft1
                 return;
             }
 
-            SubmitAssignment("Submitted");
+            SubmitAssignment();
         }
 
-        protected void btnSaveDraft_Click(object sender, EventArgs e)
-        {
-            SubmitAssignment("Draft");
-        }
-
-        private void SubmitAssignment(string status)
+        private void SubmitAssignment()
         {
             // Validate userId before proceeding
             if (userId <= 0)
@@ -331,14 +314,13 @@ namespace assignmentDraft1
                             SET SubmissionText = @SubmissionText, 
                                 AttachmentPath = COALESCE(@AttachmentPath, AttachmentPath),
                                 SubmissionDate = @SubmissionDate,
-                                Status = @Status,
+                                Status = 'Submitted',
                                 IsLate = @IsLate
                             WHERE SubmissionID = @SubmissionID", con);
 
                         updateCmd.Parameters.AddWithValue("@SubmissionText", txtSubmission.Text.Trim());
                         updateCmd.Parameters.AddWithValue("@AttachmentPath", (object)attachmentPath ?? DBNull.Value);
                         updateCmd.Parameters.AddWithValue("@SubmissionDate", DateTime.Now);
-                        updateCmd.Parameters.AddWithValue("@Status", status);
                         updateCmd.Parameters.AddWithValue("@SubmissionID", existingSubmissionId);
 
                         // Check if late
@@ -349,6 +331,9 @@ namespace assignmentDraft1
                         updateCmd.Parameters.AddWithValue("@IsLate", DateTime.Now > dueDate);
 
                         updateCmd.ExecuteNonQuery();
+
+                        lblMessage.Text = "Assignment resubmitted successfully!";
+                        lblMessage.ForeColor = System.Drawing.Color.Green;
                     }
                     else
                     {
@@ -359,7 +344,7 @@ namespace assignmentDraft1
                         SqlCommand insertCmd = new SqlCommand(@"
                             INSERT INTO AssignmentSubmissions 
                             (SubmissionID, AssignmentID, UserID, SubmissionText, AttachmentPath, SubmissionDate, Status, IsLate)
-                            VALUES (@SubmissionID, @AssignmentID, @UserID, @SubmissionText, @AttachmentPath, @SubmissionDate, @Status, @IsLate)", con);
+                            VALUES (@SubmissionID, @AssignmentID, @UserID, @SubmissionText, @AttachmentPath, @SubmissionDate, 'Submitted', @IsLate)", con);
 
                         insertCmd.Parameters.AddWithValue("@SubmissionID", newSubmissionId);
                         insertCmd.Parameters.AddWithValue("@AssignmentID", assignmentId);
@@ -367,7 +352,6 @@ namespace assignmentDraft1
                         insertCmd.Parameters.AddWithValue("@SubmissionText", txtSubmission.Text.Trim());
                         insertCmd.Parameters.AddWithValue("@AttachmentPath", (object)attachmentPath ?? DBNull.Value);
                         insertCmd.Parameters.AddWithValue("@SubmissionDate", DateTime.Now);
-                        insertCmd.Parameters.AddWithValue("@Status", status);
 
                         // Check if late
                         SqlCommand dueDateCmd = new SqlCommand("SELECT DueDate FROM Assignments WHERE AssignmentID = @AssignmentID", con);
@@ -377,17 +361,13 @@ namespace assignmentDraft1
                         insertCmd.Parameters.AddWithValue("@IsLate", DateTime.Now > dueDate);
 
                         insertCmd.ExecuteNonQuery();
-                    }
 
-                    string message = status == "Draft" ? "Draft saved successfully!" : "Assignment submitted successfully!";
-                    lblMessage.Text = message;
-                    lblMessage.ForeColor = System.Drawing.Color.Green;
+                        lblMessage.Text = "Assignment submitted successfully!";
+                        lblMessage.ForeColor = System.Drawing.Color.Green;
+                    }
 
                     // Refresh the page to show updated status
-                    if (status == "Submitted")
-                    {
-                        Response.Redirect(Request.RawUrl);
-                    }
+                    Response.Redirect(Request.RawUrl);
                 }
             }
             catch (SqlException sqlEx)

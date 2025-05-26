@@ -229,8 +229,6 @@
                 <div style="display: flex; gap: 1rem; margin-top: 2rem;">
                     <asp:Button ID="btnSubmit" runat="server" Text="Submit Assignment" 
                               CssClass="btn" OnClick="btnSubmit_Click" />
-                    <asp:Button ID="btnSaveDraft" runat="server" Text="Save as Draft" 
-                              CssClass="option-btn" OnClick="btnSaveDraft_Click" />
                     <a href="homeWebform.aspx" class="delete-btn">Cancel</a>
                 </div>
             </asp:Panel>
