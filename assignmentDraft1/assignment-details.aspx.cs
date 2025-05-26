@@ -56,9 +56,20 @@ namespace assignmentDraft1
                     lblRole.Text = reader["Role"].ToString();
                     lblSidebarName.Text = reader["Name"].ToString();
                     lblSidebarRole.Text = reader["Role"].ToString();
+
+                    // Debug: Check if userId is valid
+                    if (userId <= 0)
+                    {
+                        lblMessage.Text = "Error: Invalid User ID. Please contact administrator.";
+                        lblMessage.ForeColor = System.Drawing.Color.Red;
+                        pnlSubmissionForm.Visible = false;
+                        return;
+                    }
                 }
                 else
                 {
+                    lblMessage.Text = $"Error: User not found for email: {email}. Please login again.";
+                    lblMessage.ForeColor = System.Drawing.Color.Red;
                     Response.Redirect("loginWebform.aspx");
                 }
             }
@@ -225,6 +236,14 @@ namespace assignmentDraft1
 
         private void SubmitAssignment(string status)
         {
+            // Validate userId before proceeding
+            if (userId <= 0)
+            {
+                lblMessage.Text = "Error: Invalid user session. Please login again.";
+                lblMessage.ForeColor = System.Drawing.Color.Red;
+                return;
+            }
+
             string cs = ConfigurationManager.ConnectionStrings["dbConnection"].ConnectionString;
             string attachmentPath = null;
 
@@ -267,80 +286,119 @@ namespace assignmentDraft1
                 }
             }
 
-            using (SqlConnection con = new SqlConnection(cs))
+            try
             {
-                con.Open();
-
-                // Check if submission already exists
-                SqlCommand checkCmd = new SqlCommand("SELECT SubmissionID FROM AssignmentSubmissions WHERE AssignmentID = @AssignmentID AND UserID = @UserID", con);
-                checkCmd.Parameters.AddWithValue("@AssignmentID", assignmentId);
-                checkCmd.Parameters.AddWithValue("@UserID", userId);
-
-                object existingSubmissionId = checkCmd.ExecuteScalar();
-
-                if (existingSubmissionId != null)
+                using (SqlConnection con = new SqlConnection(cs))
                 {
-                    // Update existing submission
-                    SqlCommand updateCmd = new SqlCommand(@"
-                        UPDATE AssignmentSubmissions 
-                        SET SubmissionText = @SubmissionText, 
-                            AttachmentPath = COALESCE(@AttachmentPath, AttachmentPath),
-                            SubmissionDate = @SubmissionDate,
-                            Status = @Status,
-                            IsLate = @IsLate
-                        WHERE SubmissionID = @SubmissionID", con);
+                    con.Open();
 
-                    updateCmd.Parameters.AddWithValue("@SubmissionText", txtSubmission.Text.Trim());
-                    updateCmd.Parameters.AddWithValue("@AttachmentPath", (object)attachmentPath ?? DBNull.Value);
-                    updateCmd.Parameters.AddWithValue("@SubmissionDate", DateTime.Now);
-                    updateCmd.Parameters.AddWithValue("@Status", status);
-                    updateCmd.Parameters.AddWithValue("@SubmissionID", existingSubmissionId);
+                    // Verify that the user exists in the Users table
+                    SqlCommand verifyUserCmd = new SqlCommand("SELECT COUNT(*) FROM Users WHERE UserID = @UserID", con);
+                    verifyUserCmd.Parameters.AddWithValue("@UserID", userId);
+                    int userExists = (int)verifyUserCmd.ExecuteScalar();
 
-                    // Check if late
-                    SqlCommand dueDateCmd = new SqlCommand("SELECT DueDate FROM Assignments WHERE AssignmentID = @AssignmentID", con);
-                    dueDateCmd.Parameters.AddWithValue("@AssignmentID", assignmentId);
-                    DateTime dueDate = (DateTime)dueDateCmd.ExecuteScalar();
-                    updateCmd.Parameters.AddWithValue("@IsLate", DateTime.Now > dueDate);
+                    if (userExists == 0)
+                    {
+                        lblMessage.Text = $"Error: User ID {userId} not found in database. Please contact administrator.";
+                        lblMessage.ForeColor = System.Drawing.Color.Red;
+                        return;
+                    }
 
-                    updateCmd.ExecuteNonQuery();
+                    // Verify that the assignment exists
+                    SqlCommand verifyAssignmentCmd = new SqlCommand("SELECT COUNT(*) FROM Assignments WHERE AssignmentID = @AssignmentID", con);
+                    verifyAssignmentCmd.Parameters.AddWithValue("@AssignmentID", assignmentId);
+                    int assignmentExists = (int)verifyAssignmentCmd.ExecuteScalar();
+
+                    if (assignmentExists == 0)
+                    {
+                        lblMessage.Text = $"Error: Assignment ID {assignmentId} not found in database.";
+                        lblMessage.ForeColor = System.Drawing.Color.Red;
+                        return;
+                    }
+
+                    // Check if submission already exists
+                    SqlCommand checkCmd = new SqlCommand("SELECT SubmissionID FROM AssignmentSubmissions WHERE AssignmentID = @AssignmentID AND UserID = @UserID", con);
+                    checkCmd.Parameters.AddWithValue("@AssignmentID", assignmentId);
+                    checkCmd.Parameters.AddWithValue("@UserID", userId);
+
+                    object existingSubmissionId = checkCmd.ExecuteScalar();
+
+                    if (existingSubmissionId != null)
+                    {
+                        // Update existing submission
+                        SqlCommand updateCmd = new SqlCommand(@"
+                            UPDATE AssignmentSubmissions 
+                            SET SubmissionText = @SubmissionText, 
+                                AttachmentPath = COALESCE(@AttachmentPath, AttachmentPath),
+                                SubmissionDate = @SubmissionDate,
+                                Status = @Status,
+                                IsLate = @IsLate
+                            WHERE SubmissionID = @SubmissionID", con);
+
+                        updateCmd.Parameters.AddWithValue("@SubmissionText", txtSubmission.Text.Trim());
+                        updateCmd.Parameters.AddWithValue("@AttachmentPath", (object)attachmentPath ?? DBNull.Value);
+                        updateCmd.Parameters.AddWithValue("@SubmissionDate", DateTime.Now);
+                        updateCmd.Parameters.AddWithValue("@Status", status);
+                        updateCmd.Parameters.AddWithValue("@SubmissionID", existingSubmissionId);
+
+                        // Check if late
+                        SqlCommand dueDateCmd = new SqlCommand("SELECT DueDate FROM Assignments WHERE AssignmentID = @AssignmentID", con);
+                        dueDateCmd.Parameters.AddWithValue("@AssignmentID", assignmentId);
+                        object dueDateObj = dueDateCmd.ExecuteScalar();
+                        DateTime dueDate = dueDateObj != null ? (DateTime)dueDateObj : DateTime.MaxValue;
+                        updateCmd.Parameters.AddWithValue("@IsLate", DateTime.Now > dueDate);
+
+                        updateCmd.ExecuteNonQuery();
+                    }
+                    else
+                    {
+                        // Create new submission
+                        SqlCommand getIdCmd = new SqlCommand("SELECT ISNULL(MAX(SubmissionID), 0) + 1 FROM AssignmentSubmissions", con);
+                        int newSubmissionId = (int)getIdCmd.ExecuteScalar();
+
+                        SqlCommand insertCmd = new SqlCommand(@"
+                            INSERT INTO AssignmentSubmissions 
+                            (SubmissionID, AssignmentID, UserID, SubmissionText, AttachmentPath, SubmissionDate, Status, IsLate)
+                            VALUES (@SubmissionID, @AssignmentID, @UserID, @SubmissionText, @AttachmentPath, @SubmissionDate, @Status, @IsLate)", con);
+
+                        insertCmd.Parameters.AddWithValue("@SubmissionID", newSubmissionId);
+                        insertCmd.Parameters.AddWithValue("@AssignmentID", assignmentId);
+                        insertCmd.Parameters.AddWithValue("@UserID", userId);
+                        insertCmd.Parameters.AddWithValue("@SubmissionText", txtSubmission.Text.Trim());
+                        insertCmd.Parameters.AddWithValue("@AttachmentPath", (object)attachmentPath ?? DBNull.Value);
+                        insertCmd.Parameters.AddWithValue("@SubmissionDate", DateTime.Now);
+                        insertCmd.Parameters.AddWithValue("@Status", status);
+
+                        // Check if late
+                        SqlCommand dueDateCmd = new SqlCommand("SELECT DueDate FROM Assignments WHERE AssignmentID = @AssignmentID", con);
+                        dueDateCmd.Parameters.AddWithValue("@AssignmentID", assignmentId);
+                        object dueDateObj = dueDateCmd.ExecuteScalar();
+                        DateTime dueDate = dueDateObj != null ? (DateTime)dueDateObj : DateTime.MaxValue;
+                        insertCmd.Parameters.AddWithValue("@IsLate", DateTime.Now > dueDate);
+
+                        insertCmd.ExecuteNonQuery();
+                    }
+
+                    string message = status == "Draft" ? "Draft saved successfully!" : "Assignment submitted successfully!";
+                    lblMessage.Text = message;
+                    lblMessage.ForeColor = System.Drawing.Color.Green;
+
+                    // Refresh the page to show updated status
+                    if (status == "Submitted")
+                    {
+                        Response.Redirect(Request.RawUrl);
+                    }
                 }
-                else
-                {
-                    // Create new submission
-                    SqlCommand getIdCmd = new SqlCommand("SELECT ISNULL(MAX(SubmissionID), 0) + 1 FROM AssignmentSubmissions", con);
-                    int newSubmissionId = (int)getIdCmd.ExecuteScalar();
-
-                    SqlCommand insertCmd = new SqlCommand(@"
-                        INSERT INTO AssignmentSubmissions 
-                        (SubmissionID, AssignmentID, UserID, SubmissionText, AttachmentPath, SubmissionDate, Status, IsLate)
-                        VALUES (@SubmissionID, @AssignmentID, @UserID, @SubmissionText, @AttachmentPath, @SubmissionDate, @Status, @IsLate)", con);
-
-                    insertCmd.Parameters.AddWithValue("@SubmissionID", newSubmissionId);
-                    insertCmd.Parameters.AddWithValue("@AssignmentID", assignmentId);
-                    insertCmd.Parameters.AddWithValue("@UserID", userId);
-                    insertCmd.Parameters.AddWithValue("@SubmissionText", txtSubmission.Text.Trim());
-                    insertCmd.Parameters.AddWithValue("@AttachmentPath", (object)attachmentPath ?? DBNull.Value);
-                    insertCmd.Parameters.AddWithValue("@SubmissionDate", DateTime.Now);
-                    insertCmd.Parameters.AddWithValue("@Status", status);
-
-                    // Check if late
-                    SqlCommand dueDateCmd = new SqlCommand("SELECT DueDate FROM Assignments WHERE AssignmentID = @AssignmentID", con);
-                    dueDateCmd.Parameters.AddWithValue("@AssignmentID", assignmentId);
-                    DateTime dueDate = (DateTime)dueDateCmd.ExecuteScalar();
-                    insertCmd.Parameters.AddWithValue("@IsLate", DateTime.Now > dueDate);
-
-                    insertCmd.ExecuteNonQuery();
-                }
-
-                string message = status == "Draft" ? "Draft saved successfully!" : "Assignment submitted successfully!";
-                lblMessage.Text = message;
-                lblMessage.ForeColor = System.Drawing.Color.Green;
-
-                // Refresh the page to show updated status
-                if (status == "Submitted")
-                {
-                    Response.Redirect(Request.RawUrl);
-                }
+            }
+            catch (SqlException sqlEx)
+            {
+                lblMessage.Text = $"Database Error: {sqlEx.Message}<br/>UserID: {userId}, AssignmentID: {assignmentId}";
+                lblMessage.ForeColor = System.Drawing.Color.Red;
+            }
+            catch (Exception ex)
+            {
+                lblMessage.Text = $"Error: {ex.Message}";
+                lblMessage.ForeColor = System.Drawing.Color.Red;
             }
         }
 
