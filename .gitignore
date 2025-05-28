@@ -363,3 +363,4 @@ MigrationBackup/
 FodyWeavers.xsd
 /assignmentDraft1/App_Data/Database1.mdf
 /assignmentDraft1/App_Data/Database1.mdf
+/assignmentDraft1/App_Data/Database1_log.ldf
