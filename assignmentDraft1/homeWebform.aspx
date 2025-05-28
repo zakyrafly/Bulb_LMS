@@ -18,7 +18,7 @@
    
    <section class="flex">
 
-      <a href="home.html" class="logo">Bulb</a>
+      <a href="homeWebform.aspx" class="logo">Bulb</a>
 
 <asp:Panel runat="server" CssClass="search-form">
     <asp:TextBox ID="txtSearch" runat="server" CssClass="search-input" placeholder="Search courses..." MaxLength="100" />
@@ -65,7 +65,7 @@
    </div>
 
    <nav class="navbar">
-      <a href="home.html"><i class="fas fa-home"></i><span>home</span></a>
+      <a href="homeWebform.aspx"><i class="fas fa-home"></i><span>home</span></a>
       <a href="about.html"><i class="fas fa-question"></i><span>about</span></a>
       <a href="courses.html"><i class="fas fa-graduation-cap"></i><span>courses</span></a>
       <a href="teachers.html"><i class="fas fa-chalkboard-user"></i><span>teachers</span></a>
@@ -77,9 +77,9 @@
 
 <section class="home-grid">
 
-   <h1 class="heading">Timeline</h1>
+    <h1 class="heading">Timeline</h1>
 
-<div class="box timeline-box">
+<div class="timeline-box box">
    <div class="timeline-filters">
       <select class="box select">
          <option>All</option>
@@ -97,17 +97,36 @@
       </select>
 
       <input type="text" class="box search-input" placeholder="Search by activity type or name" oninput="handleSearchPlaceholder(this)">
-
    </div>
 
    <p class="updated-date" id="current-date">Updated: </p>
 
-   <div class="assignment-card box">
-      <h3 class="title">Assignment: Final Project Report</h3>
-      <p class="likes">Course: <span>Web Development</span></p>
-      <p class="likes">Due: <span>April 30, 2025</span></p>
-      <a href="#" class="inline-btn">View Assignment</a>
-   </div>
+   <!-- Dynamic Assignments Repeater -->
+   <asp:Repeater ID="assignmentRepeater" runat="server">
+       <ItemTemplate>
+           <div class="assignment-card box">
+               <h3 class="title">Assignment: <%# Eval("Title") %></h3>
+               <p class="likes">Course: <span><%# Eval("CourseName") %></span></p>
+               <p class="likes">Due: <span><%# Eval("DueDate", "{0:MMM dd, yyyy}") %></span></p>
+               <p class="likes">Status: 
+                   <span class='<%# Eval("Status").ToString().ToLower() == "overdue" ? "status-overdue" : 
+                                   Eval("Status").ToString().ToLower() == "submitted" ? "status-submitted" : "status-pending" %>'>
+                       <%# Eval("Status") %>
+                   </span>
+               </p>
+               <%# Eval("PointsEarned") != DBNull.Value ? 
+                   "<p class='likes'>Grade: <span>" + Eval("PointsEarned") + "/" + Eval("MaxPoints") + "</span></p>" : "" %>
+               <a href='assignment-details.aspx?assignmentID=<%# Eval("AssignmentID") %>' class="inline-btn">View Assignment</a>
+           </div>
+       </ItemTemplate>
+   </asp:Repeater>
+   
+   <!-- Show message if no assignments -->
+   <asp:Panel ID="noAssignmentsPanel" runat="server" Visible="false">
+       <div class="assignment-card box">
+           <p>No assignments at this time.</p>
+       </div>
+   </asp:Panel>
 </div>
 
 </section>
