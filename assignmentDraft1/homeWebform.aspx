@@ -28,17 +28,6 @@
 </asp:Panel>
 
 
-<<<<<<< HEAD
-<asp:Panel runat="server" CssClass="search-form">
-    <asp:TextBox ID="txtSearch" runat="server" CssClass="search-input" placeholder="Search courses..." MaxLength="100" />
-    <asp:LinkButton ID="btnSearch" runat="server" CssClass="inline-btn search-btn" OnClick="btnSearch_Click">
-        <i class="fas fa-search"></i>
-    </asp:LinkButton>
-</asp:Panel>
-
-
-=======
->>>>>>> lecturer-page
 
       <div class="icons">
          <div id="menu-btn" class="fas fa-bars"></div>

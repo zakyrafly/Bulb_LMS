@@ -66,8 +66,6 @@ namespace assignmentDraft1
         }
 
 
-<<<<<<< HEAD
-=======
         private void LoadAssignments(int userId)
         {
             string cs = ConfigurationManager.ConnectionStrings["dbConnection"].ConnectionString;
@@ -110,7 +108,6 @@ namespace assignmentDraft1
                 assignmentRepeater.DataBind();
             }
         }
->>>>>>> lecturer-page
 
 
 

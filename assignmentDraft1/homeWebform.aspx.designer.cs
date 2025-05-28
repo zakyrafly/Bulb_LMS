@@ -41,10 +41,6 @@ namespace assignmentDraft1
         /// </remarks>
         protected global::System.Web.UI.WebControls.LinkButton btnSearch;
 
-<<<<<<< HEAD
-
-=======
->>>>>>> lecturer-page
         /// <summary>
         /// lblName control.
         /// </summary>
