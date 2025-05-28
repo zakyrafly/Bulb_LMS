@@ -71,6 +71,8 @@
     <Content Include="App_Data\Database1_log.ldf">
       <DependentUpon>Database1.mdf</DependentUpon>
     </Content>
+    <Content Include="assignment-details.aspx" />
+    <Content Include="assignments.aspx" />
     <Content Include="courses.html" />
     <Content Include="home.html" />
     <Content Include="homeWebform.aspx" />
@@ -80,11 +82,26 @@
     <Content Include="Register.aspx" />
     <Content Include="register.html" />
     <Content Include="searchResults.aspx" />
+    <Content Include="TeacherWebform.aspx" />
     <Content Include="watch-video.html" />
     <Content Include="Web.config" />
     <Content Include="loginWebform.aspx" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="assignment-details.aspx.cs">
+      <DependentUpon>assignment-details.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="assignment-details.aspx.designer.cs">
+      <DependentUpon>assignment-details.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="assignments.aspx.cs">
+      <DependentUpon>assignments.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="assignments.aspx.designer.cs">
+      <DependentUpon>assignments.aspx</DependentUpon>
+    </Compile>
     <Compile Include="homeWebform.aspx.cs">
       <DependentUpon>homeWebform.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
@@ -120,6 +137,13 @@
     </Compile>
     <Compile Include="searchResults.aspx.designer.cs">
       <DependentUpon>searchResults.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="TeacherWebform.aspx.cs">
+      <DependentUpon>TeacherWebform.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="TeacherWebform.aspx.designer.cs">
+      <DependentUpon>TeacherWebform.aspx</DependentUpon>
     </Compile>
   </ItemGroup>
   <ItemGroup>
