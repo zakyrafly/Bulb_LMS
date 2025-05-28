@@ -67,6 +67,7 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Content Include="adminDashboard.aspx" />
     <Content Include="App_Data\Database1.mdf" />
     <Content Include="App_Data\Database1_log.ldf">
       <DependentUpon>Database1.mdf</DependentUpon>
@@ -88,6 +89,13 @@
     <Content Include="loginWebform.aspx" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="adminDashboard.aspx.cs">
+      <DependentUpon>adminDashboard.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="adminDashboard.aspx.designer.cs">
+      <DependentUpon>adminDashboard.aspx</DependentUpon>
+    </Compile>
     <Compile Include="assignment-details.aspx.cs">
       <DependentUpon>assignment-details.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
