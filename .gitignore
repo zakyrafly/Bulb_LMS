@@ -361,3 +361,5 @@ MigrationBackup/
 
 # Fody - auto-generated XML schema
 FodyWeavers.xsd
+/.vs/assignmentDraft1/CopilotIndices/17.13.433.20974/CodeChunks.db
+/.vs/assignmentDraft1/CopilotIndices/17.13.433.20974/SemanticSymbols.db
