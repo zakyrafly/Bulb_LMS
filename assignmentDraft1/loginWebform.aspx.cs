@@ -87,6 +87,10 @@ namespace assignmentDraft1
                                 lblMessage.ForeColor = System.Drawing.Color.Red;
                             }
                         }
+                        else if (string.Equals(userRole, "Admin", StringComparison.OrdinalIgnoreCase))
+                        {
+                            Response.Redirect("adminDashboard.aspx");
+                        }
                         else
                         {
                             // Handle unexpected role
