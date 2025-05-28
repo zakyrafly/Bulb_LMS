@@ -18,7 +18,7 @@
    
    <section class="flex">
 
-      <a href="home.html" class="logo">Bulb</a>
+      <a href="homeWebform.aspx" class="logo">Bulb</a>
 
 <asp:Panel runat="server" CssClass="search-form">
     <asp:TextBox ID="txtSearch" runat="server" CssClass="search-input" placeholder="Search courses..." MaxLength="100" />
@@ -65,7 +65,7 @@
    </div>
 
    <nav class="navbar">
-      <a href="home.html"><i class="fas fa-home"></i><span>home</span></a>
+      <a href="homeWebform.aspx"><i class="fas fa-home"></i><span>home</span></a>
       <a href="about.html"><i class="fas fa-question"></i><span>about</span></a>
       <a href="courses.html"><i class="fas fa-graduation-cap"></i><span>courses</span></a>
       <a href="teachers.html"><i class="fas fa-chalkboard-user"></i><span>teachers</span></a>

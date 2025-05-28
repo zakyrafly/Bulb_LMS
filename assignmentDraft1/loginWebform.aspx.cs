@@ -13,56 +13,97 @@ namespace assignmentDraft1
     {
         protected void Page_Load(object sender, EventArgs e)
         {
-
+            // Clear any existing sessions on login page load
+            if (!IsPostBack)
+            {
+                Session.Clear();
+            }
         }
 
         protected void btnLogin_Click(object sender, EventArgs e)
         {
-            string email = txtEmail.Text;
-            string password = txtPassword.Text;
+            string email = txtEmail.Text.Trim();
+            string password = txtPassword.Text.Trim();
+
+            // Validate input
+            if (string.IsNullOrEmpty(email) || string.IsNullOrEmpty(password))
+            {
+                lblMessage.Text = "Please enter both email and password.";
+                return;
+            }
 
             string cs = ConfigurationManager.ConnectionStrings["dbConnection"].ConnectionString;
 
             using (SqlConnection con = new SqlConnection(cs))
             {
-                // Modified query to retrieve user details including role
-                string query = "SELECT Name, Role FROM Users WHERE username=@email AND Password=@pass";
-                SqlCommand cmd = new SqlCommand(query, con);
-                cmd.Parameters.AddWithValue("@email", email);
-                cmd.Parameters.AddWithValue("@pass", password);
-
-                con.Open();
-                SqlDataReader reader = cmd.ExecuteReader();
-
-                if (reader.Read())
+                try
                 {
-                    // Successful login - get user details
-                    string userName = reader["Name"].ToString();
-                    string userRole = reader["Role"].ToString();
+                    // Modified query to retrieve user details including role
+                    string query = "SELECT UserID, Name, Role FROM Users WHERE Username = @email AND Password = @pass";
+                    SqlCommand cmd = new SqlCommand(query, con);
+                    cmd.Parameters.AddWithValue("@email", email);
+                    cmd.Parameters.AddWithValue("@pass", password);
 
-                    // Store user information in session
-                    Session["email"] = email;
-                    Session["userName"] = userName;
-                    Session["userRole"] = userRole;
+                    con.Open();
+                    SqlDataReader reader = cmd.ExecuteReader();
 
-                    // Redirect based on role
-                    if (userRole.Equals("Student", StringComparison.OrdinalIgnoreCase))
+                    if (reader.Read())
                     {
-                        Response.Redirect("homeWebform.aspx");
-                    }
-                    else if (userRole.Equals("Lecturer", StringComparison.OrdinalIgnoreCase))
-                    {
-                        Response.Redirect("teacherWebform.aspx");
+                        // Successful login - get user details
+                        string userId = reader["UserID"].ToString();
+                        string userName = reader["Name"].ToString();
+                        string userRole = reader["Role"].ToString();
+
+                        // Store user information in session
+                        Session["email"] = email;
+                        Session["userId"] = userId;
+                        Session["userName"] = userName;
+                        Session["userRole"] = userRole;
+
+                        reader.Close();
+
+                        // Debug: Show what role was detected
+                        System.Diagnostics.Debug.WriteLine($"Login successful - Role: {userRole}");
+
+                        // Redirect based on role (case-insensitive comparison)
+                        if (string.Equals(userRole, "Student", StringComparison.OrdinalIgnoreCase))
+                        {
+                            Response.Redirect("homeWebform.aspx");
+                        }
+                        else if (string.Equals(userRole, "Lecturer", StringComparison.OrdinalIgnoreCase))
+                        {
+                            // Verify lecturer exists in Lecturers table
+                            SqlCommand lecCmd = new SqlCommand("SELECT COUNT(*) FROM Lecturers WHERE Email = @email", con);
+                            lecCmd.Parameters.AddWithValue("@email", email);
+                            int lecturerExists = (int)lecCmd.ExecuteScalar();
+
+                            if (lecturerExists > 0)
+                            {
+                                Response.Redirect("teacherWebform.aspx");
+                            }
+                            else
+                            {
+                                lblMessage.Text = "Lecturer profile not found. Please contact administrator.";
+                                lblMessage.ForeColor = System.Drawing.Color.Red;
+                            }
+                        }
+                        else
+                        {
+                            // Handle unexpected role
+                            lblMessage.Text = $"Unknown user role: {userRole}. Please contact administrator.";
+                            lblMessage.ForeColor = System.Drawing.Color.Red;
+                        }
                     }
                     else
                     {
-                        // Handle unexpected role or redirect to a default page
-                        Response.Redirect("homeWebform.aspx");
+                        lblMessage.Text = "Invalid email or password.";
+                        lblMessage.ForeColor = System.Drawing.Color.Red;
                     }
                 }
-                else
+                catch (Exception ex)
                 {
-                    lblMessage.Text = "Invalid email or password.";
+                    lblMessage.Text = "Login error: " + ex.Message;
+                    lblMessage.ForeColor = System.Drawing.Color.Red;
                 }
             }
         }

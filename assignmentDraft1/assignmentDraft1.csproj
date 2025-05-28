@@ -82,7 +82,7 @@
     <Content Include="Register.aspx" />
     <Content Include="register.html" />
     <Content Include="searchResults.aspx" />
-    <Content Include="teacherWebform.aspx" />
+    <Content Include="TeacherWebform.aspx" />
     <Content Include="watch-video.html" />
     <Content Include="Web.config" />
     <Content Include="loginWebform.aspx" />
@@ -138,12 +138,12 @@
     <Compile Include="searchResults.aspx.designer.cs">
       <DependentUpon>searchResults.aspx</DependentUpon>
     </Compile>
-    <Compile Include="teacherWebform.aspx.cs">
-      <DependentUpon>teacherWebform.aspx</DependentUpon>
+    <Compile Include="TeacherWebform.aspx.cs">
+      <DependentUpon>TeacherWebform.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
     </Compile>
-    <Compile Include="teacherWebform.aspx.designer.cs">
-      <DependentUpon>teacherWebform.aspx</DependentUpon>
+    <Compile Include="TeacherWebform.aspx.designer.cs">
+      <DependentUpon>TeacherWebform.aspx</DependentUpon>
     </Compile>
   </ItemGroup>
   <ItemGroup>
