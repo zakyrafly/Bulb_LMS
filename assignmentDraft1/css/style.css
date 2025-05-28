@@ -484,6 +484,21 @@ section{
    color: var(--main-color);
 }
 
+.status-overdue {
+    color: #e74c3c;
+    font-weight: bold;
+}
+
+.status-submitted {
+    color: #27ae60;
+    font-weight: bold;
+}
+
+.status-pending {
+    color: #f39c12;
+    font-weight: bold;
+}
+
 
 .about .row{
    display: flex;
