@@ -1,6 +1,6 @@
 <h1>Note:</h1>
 
-When cloning the repo, to be able to run the program properly you have to double click the .sln file
+When cloning the repo initially, to be able to run the program properly you have to double click the .sln file
 
 <h1>Login Info</h1>
 
