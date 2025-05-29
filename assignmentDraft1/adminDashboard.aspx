@@ -244,9 +244,9 @@
     function showBulkImportModal() {
         alert('Bulk import feature coming soon!');
     }
-    
+
     // Auto-refresh dashboard every 5 minutes
-    setTimeout(function() {
+    setTimeout(function () {
         location.reload();
     }, 300000);
 </script>
