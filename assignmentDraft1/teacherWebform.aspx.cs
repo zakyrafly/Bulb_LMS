@@ -29,6 +29,24 @@ namespace assignmentDraft1
                 LoadCourses();
                 LoadRecentAssignments();
             }
+
+            // Handle confirmation-based deletions
+            HandlePostBackEvents();
+        }
+
+        private void HandlePostBackEvents()
+        {
+            string eventTarget = Request.Form["__EVENTTARGET"];
+            string eventArgument = Request.Form["__EVENTARGUMENT"];
+
+            if (!string.IsNullOrEmpty(eventArgument) && eventArgument.StartsWith("deleteCourse_"))
+            {
+                string courseIdStr = eventArgument.Substring("deleteCourse_".Length);
+                if (int.TryParse(courseIdStr, out int courseId))
+                {
+                    DeleteCourse(courseId);
+                }
+            }
         }
 
         private void LoadLecturerInfo()
@@ -73,7 +91,7 @@ namespace assignmentDraft1
                 }
                 else
                 {
-                    ShowMessage("Lecturer profile not found. Please contact administrator.", "red");
+                    ShowMessage("Lecturer profile not found. Please contact administrator.", "error");
                 }
             }
         }
@@ -141,30 +159,47 @@ namespace assignmentDraft1
             {
                 con.Open();
 
+                // Cast the text column to nvarchar to avoid GROUP BY issues
                 SqlCommand cmd = new SqlCommand(@"
                     SELECT 
                         c.CourseID,
                         c.CourseName,
-                        c.Description,
-                        c.Category
+                        CAST(c.Description AS NVARCHAR(MAX)) as Description,
+                        c.Category,
+                        (SELECT COUNT(*) FROM Modules m WHERE m.CourseID = c.CourseID AND m.LecturerID = @LecturerID) as ModuleCount
                     FROM Courses c
-                    JOIN Modules m ON c.CourseID = m.CourseID
-                    WHERE m.LecturerID = @LecturerID
-                    ORDER BY c.CourseName", con);
+                    WHERE EXISTS (SELECT 1 FROM Modules m WHERE m.CourseID = c.CourseID AND m.LecturerID = @LecturerID)", con);
+
                 cmd.Parameters.AddWithValue("@LecturerID", lecturerId);
 
                 SqlDataAdapter da = new SqlDataAdapter(cmd);
                 DataTable dt = new DataTable();
-                da.Fill(dt);
 
-                if (dt.Rows.Count > 0)
+                try
                 {
-                    courseRepeater.DataSource = dt;
-                    courseRepeater.DataBind();
-                    pnlNoCourses.Visible = false;
+                    da.Fill(dt);
+
+                    // Sort the DataTable in memory
+                    if (dt.Rows.Count > 0)
+                    {
+                        DataView dv = dt.DefaultView;
+                        dv.Sort = "CourseName ASC";
+                        DataTable sortedDt = dv.ToTable();
+
+                        courseRepeater.DataSource = sortedDt;
+                        courseRepeater.DataBind();
+                        pnlNoCourses.Visible = false;
+                    }
+                    else
+                    {
+                        courseRepeater.DataSource = null;
+                        courseRepeater.DataBind();
+                        pnlNoCourses.Visible = true;
+                    }
                 }
-                else
+                catch (SqlException ex)
                 {
+                    ShowMessage("Database error: " + ex.Message, "error");
                     courseRepeater.DataSource = null;
                     courseRepeater.DataBind();
                     pnlNoCourses.Visible = true;
@@ -180,10 +215,11 @@ namespace assignmentDraft1
                 con.Open();
 
                 SqlCommand cmd = new SqlCommand(@"
-                    SELECT TOP 5
+                    SELECT 
                         a.AssignmentID,
                         a.Title,
                         a.DueDate,
+                        a.CreatedDate,
                         c.CourseName,
                         ISNULL(SubmissionStats.TotalSubmissions, 0) AS TotalSubmissions,
                         ISNULL(StudentCount.MaxStudents, 0) AS MaxStudents
@@ -206,17 +242,31 @@ namespace assignmentDraft1
                         JOIN UserCourses uc ON m.CourseID = uc.CourseID
                         GROUP BY m.ModuleID
                     ) StudentCount ON m.ModuleID = StudentCount.ModuleID
-                    WHERE m.LecturerID = @LecturerID AND a.IsActive = 1
-                    ORDER BY a.CreatedDate DESC", con);
+                    WHERE m.LecturerID = @LecturerID AND a.IsActive = 1", con);
+
                 cmd.Parameters.AddWithValue("@LecturerID", lecturerId);
 
                 SqlDataAdapter da = new SqlDataAdapter(cmd);
                 DataTable dt = new DataTable();
                 da.Fill(dt);
 
+                // Sort and limit in memory
                 if (dt.Rows.Count > 0)
                 {
-                    assignmentRepeater.DataSource = dt;
+                    DataView dv = dt.DefaultView;
+                    dv.Sort = "CreatedDate DESC";
+
+                    // Take only top 5
+                    DataTable sortedDt = dv.ToTable();
+                    DataTable top5 = sortedDt.Clone();
+
+                    int count = Math.Min(sortedDt.Rows.Count, 5);
+                    for (int i = 0; i < count; i++)
+                    {
+                        top5.ImportRow(sortedDt.Rows[i]);
+                    }
+
+                    assignmentRepeater.DataSource = top5;
                     assignmentRepeater.DataBind();
                     pnlNoAssignments.Visible = false;
                 }
@@ -238,18 +288,54 @@ namespace assignmentDraft1
             }
         }
 
+        // ====== COURSE MANAGEMENT METHODS ======
+
+        protected void BtnManageModules_Click(object sender, EventArgs e)
+        {
+            try
+            {
+                LinkButton btn = (LinkButton)sender;
+                int courseId = Convert.ToInt32(btn.CommandArgument);
+
+                // Redirect to the dedicated module management page
+                Response.Redirect($"ManageModules.aspx?courseId={courseId}");
+            }
+            catch (Exception ex)
+            {
+                ShowMessage("Error: " + ex.Message, "error");
+            }
+        }
+
         protected void BtnEditCourse_Click(object sender, EventArgs e)
         {
-            LinkButton btn = (LinkButton)sender;
-            int courseId = Convert.ToInt32(btn.CommandArgument);
-            LoadCourseForEdit(courseId);
+            try
+            {
+                LinkButton btn = (LinkButton)sender;
+                int courseId = Convert.ToInt32(btn.CommandArgument);
+                LoadCourseForEdit(courseId);
+            }
+            catch (Exception ex)
+            {
+                ShowMessage("Error loading course for editing: " + ex.Message, "error");
+            }
         }
 
         protected void BtnDeleteCourse_Click(object sender, EventArgs e)
         {
-            LinkButton btn = (LinkButton)sender;
-            int courseId = Convert.ToInt32(btn.CommandArgument);
-            DeleteCourse(courseId);
+            try
+            {
+                LinkButton btn = (LinkButton)sender;
+                int courseId = Convert.ToInt32(btn.CommandArgument);
+
+                // The actual deletion will be handled by the confirmation dialog JavaScript
+                // This method is called but doesn't do the deletion - it's handled by HandlePostBackEvents
+                // Just log the attempt for debugging
+                System.Diagnostics.Debug.WriteLine($"Delete course button clicked for CourseID: {courseId}");
+            }
+            catch (Exception ex)
+            {
+                ShowMessage("Error: " + ex.Message, "error");
+            }
         }
 
         private void LoadCourseForEdit(int courseId)
@@ -257,25 +343,57 @@ namespace assignmentDraft1
             string cs = ConfigurationManager.ConnectionStrings["dbConnection"].ConnectionString;
             using (SqlConnection con = new SqlConnection(cs))
             {
-                con.Open();
-
-                SqlCommand cmd = new SqlCommand(@"
-                    SELECT CourseID, CourseName, Description, Category
-                    FROM Courses 
-                    WHERE CourseID = @CourseID", con);
-                cmd.Parameters.AddWithValue("@CourseID", courseId);
-
-                SqlDataReader reader = cmd.ExecuteReader();
-                if (reader.Read())
+                try
                 {
-                    hfCourseID.Value = reader["CourseID"].ToString();
-                    txtCourseName.Text = reader["CourseName"].ToString();
-                    txtCourseDescription.Text = reader["Description"]?.ToString() ?? "";
-                    txtCategory.Text = reader["Category"]?.ToString() ?? "";
+                    con.Open();
 
-                    // Open modal via JavaScript
-                    ClientScript.RegisterStartupScript(this.GetType(), "openEditModal",
-                        $"openEditCourseModal({courseId}, '{reader["CourseName"]}', '{reader["Description"]}', '{reader["Category"]}');", true);
+                    // Verify lecturer has access to this course
+                    SqlCommand accessCmd = new SqlCommand(@"
+                        SELECT COUNT(*) FROM Modules 
+                        WHERE CourseID = @CourseID AND LecturerID = @LecturerID", con);
+                    accessCmd.Parameters.AddWithValue("@CourseID", courseId);
+                    accessCmd.Parameters.AddWithValue("@LecturerID", lecturerId);
+
+                    int moduleCount = (int)accessCmd.ExecuteScalar();
+                    if (moduleCount == 0)
+                    {
+                        ShowMessage("You don't have permission to edit this course.", "error");
+                        return;
+                    }
+
+                    SqlCommand cmd = new SqlCommand(@"
+                        SELECT CourseID, CourseName, CAST(Description AS NVARCHAR(MAX)) as Description, Category
+                        FROM Courses 
+                        WHERE CourseID = @CourseID", con);
+                    cmd.Parameters.AddWithValue("@CourseID", courseId);
+
+                    SqlDataReader reader = cmd.ExecuteReader();
+                    if (reader.Read())
+                    {
+                        hfCourseID.Value = reader["CourseID"].ToString();
+
+                        string courseName = reader["CourseName"]?.ToString() ?? "";
+                        string description = reader["Description"]?.ToString() ?? "";
+                        string category = reader["Category"]?.ToString() ?? "";
+
+                        // Escape quotes for JavaScript
+                        courseName = courseName.Replace("'", "\\'").Replace("\"", "\\\"");
+                        description = description.Replace("'", "\\'").Replace("\"", "\\\"");
+                        category = category.Replace("'", "\\'").Replace("\"", "\\\"");
+
+                        // Open modal via JavaScript
+                        string script = $"openEditCourseModal({courseId}, '{courseName}', '{description}', '{category}');";
+                        ClientScript.RegisterStartupScript(this.GetType(), "openEditModal", script, true);
+                    }
+                    else
+                    {
+                        ShowMessage("Course not found.", "error");
+                    }
+                    reader.Close();
+                }
+                catch (Exception ex)
+                {
+                    ShowMessage("Error loading course: " + ex.Message, "error");
                 }
             }
         }
@@ -289,13 +407,28 @@ namespace assignmentDraft1
                 {
                     con.Open();
 
-                    // Check if course has any assignments or students enrolled
+                    // Verify lecturer has access to this course
+                    SqlCommand accessCmd = new SqlCommand(@"
+                        SELECT COUNT(*) FROM Modules 
+                        WHERE CourseID = @CourseID AND LecturerID = @LecturerID", con);
+                    accessCmd.Parameters.AddWithValue("@CourseID", courseId);
+                    accessCmd.Parameters.AddWithValue("@LecturerID", lecturerId);
+
+                    int lecturerModuleCount = (int)accessCmd.ExecuteScalar();
+                    if (lecturerModuleCount == 0)
+                    {
+                        ShowMessage("You don't have permission to delete this course.", "error");
+                        return;
+                    }
+
+                    // Enhanced validation: Check if course has any assignments or students enrolled
                     SqlCommand checkCmd = new SqlCommand(@"
                         SELECT 
                             (SELECT COUNT(*) FROM Assignments a 
                              JOIN Modules m ON a.ModuleID = m.ModuleID 
                              WHERE m.CourseID = @CourseID) as AssignmentCount,
-                            (SELECT COUNT(*) FROM UserCourses WHERE CourseID = @CourseID) as StudentCount", con);
+                            (SELECT COUNT(*) FROM UserCourses WHERE CourseID = @CourseID) as StudentCount,
+                            (SELECT CourseName FROM Courses WHERE CourseID = @CourseID) as CourseName", con);
                     checkCmd.Parameters.AddWithValue("@CourseID", courseId);
 
                     SqlDataReader checkReader = checkCmd.ExecuteReader();
@@ -303,41 +436,70 @@ namespace assignmentDraft1
                     {
                         int assignmentCount = Convert.ToInt32(checkReader["AssignmentCount"]);
                         int studentCount = Convert.ToInt32(checkReader["StudentCount"]);
+                        string courseName = checkReader["CourseName"]?.ToString() ?? "Unknown Course";
 
                         if (assignmentCount > 0 || studentCount > 0)
                         {
                             checkReader.Close();
-                            ShowMessage("Cannot delete course. It has assignments or enrolled students.", "red");
+                            string message = $"Cannot delete course '{courseName}'. ";
+                            if (assignmentCount > 0 && studentCount > 0)
+                            {
+                                message += $"It has {assignmentCount} assignment(s) and {studentCount} enrolled student(s).";
+                            }
+                            else if (assignmentCount > 0)
+                            {
+                                message += $"It has {assignmentCount} assignment(s).";
+                            }
+                            else
+                            {
+                                message += $"It has {studentCount} enrolled student(s).";
+                            }
+                            ShowMessage(message, "error");
                             return;
                         }
                     }
                     checkReader.Close();
 
-                    // Delete associated modules first
-                    SqlCommand deleteModulesCmd = new SqlCommand("DELETE FROM Modules WHERE CourseID = @CourseID AND LecturerID = @LecturerID", con);
+                    // Delete associated modules first (only those belonging to this lecturer)
+                    SqlCommand deleteModulesCmd = new SqlCommand(
+                        "DELETE FROM Modules WHERE CourseID = @CourseID AND LecturerID = @LecturerID", con);
                     deleteModulesCmd.Parameters.AddWithValue("@CourseID", courseId);
                     deleteModulesCmd.Parameters.AddWithValue("@LecturerID", lecturerId);
-                    deleteModulesCmd.ExecuteNonQuery();
+                    int modulesDeleted = deleteModulesCmd.ExecuteNonQuery();
 
-                    // Delete the course
-                    SqlCommand deleteCourseCmd = new SqlCommand("DELETE FROM Courses WHERE CourseID = @CourseID", con);
-                    deleteCourseCmd.Parameters.AddWithValue("@CourseID", courseId);
-                    int rowsAffected = deleteCourseCmd.ExecuteNonQuery();
+                    // Check if there are any remaining modules for this course by other lecturers
+                    SqlCommand remainingModulesCmd = new SqlCommand("SELECT COUNT(*) FROM Modules WHERE CourseID = @CourseID", con);
+                    remainingModulesCmd.Parameters.AddWithValue("@CourseID", courseId);
+                    int remainingModules = (int)remainingModulesCmd.ExecuteScalar();
 
-                    if (rowsAffected > 0)
+                    int rowsAffected = 0;
+                    if (remainingModules == 0)
                     {
-                        ShowMessage("Course deleted successfully!", "green");
+                        // No other lecturers have modules in this course, safe to delete the course
+                        SqlCommand deleteCourseCmd = new SqlCommand("DELETE FROM Courses WHERE CourseID = @CourseID", con);
+                        deleteCourseCmd.Parameters.AddWithValue("@CourseID", courseId);
+                        rowsAffected = deleteCourseCmd.ExecuteNonQuery();
+                    }
+
+                    if (modulesDeleted > 0)
+                    {
+                        string message = $"Your modules removed successfully! ({modulesDeleted} module(s) deleted)";
+                        if (rowsAffected > 0)
+                        {
+                            message = $"Course deleted successfully! ({modulesDeleted} module(s) also removed)";
+                        }
+                        ShowMessage(message, "success");
                         LoadCourses();
                         LoadDashboardData();
                     }
                     else
                     {
-                        ShowMessage("Error deleting course.", "red");
+                        ShowMessage("Error deleting course. Course may not exist or you don't have permission.", "error");
                     }
                 }
                 catch (Exception ex)
                 {
-                    ShowMessage("Error: " + ex.Message, "red");
+                    ShowMessage("Database error while deleting course: " + ex.Message, "error");
                 }
             }
         }
@@ -371,15 +533,11 @@ namespace assignmentDraft1
 
                         insertCourseCmd.ExecuteNonQuery();
 
-                        // Create a default module for this course
-                        SqlCommand getModuleIdCmd = new SqlCommand("SELECT ISNULL(MAX(ModuleID), 0) + 1 FROM Modules", con);
-                        int newModuleId = (int)getModuleIdCmd.ExecuteScalar();
-
+                        // Create a default module for this course - Let SQL Server auto-generate ModuleID
                         SqlCommand insertModuleCmd = new SqlCommand(@"
-                            INSERT INTO Modules (ModuleID, CourseID, Title, Description, ModuleOrder, LecturerID)
-                            VALUES (@ModuleID, @CourseID, @Title, @Description, @ModuleOrder, @LecturerID)", con);
+                            INSERT INTO Modules (CourseID, Title, Description, ModuleOrder, LecturerID)
+                            VALUES (@CourseID, @Title, @Description, @ModuleOrder, @LecturerID)", con);
 
-                        insertModuleCmd.Parameters.AddWithValue("@ModuleID", newModuleId);
                         insertModuleCmd.Parameters.AddWithValue("@CourseID", newCourseId);
                         insertModuleCmd.Parameters.AddWithValue("@Title", txtCourseName.Text.Trim() + " - Main Module");
                         insertModuleCmd.Parameters.AddWithValue("@Description", "Main module for " + txtCourseName.Text.Trim());
@@ -388,11 +546,27 @@ namespace assignmentDraft1
 
                         insertModuleCmd.ExecuteNonQuery();
 
-                        ShowMessage("Course created successfully!", "green");
+                        ShowMessage($"Course '{txtCourseName.Text.Trim()}' created successfully with default module!", "success");
                     }
                     else
                     {
                         // Update existing course
+                        int courseId = Convert.ToInt32(hfCourseID.Value);
+
+                        // Verify lecturer has access to this course
+                        SqlCommand accessCmd = new SqlCommand(@"
+                            SELECT COUNT(*) FROM Modules 
+                            WHERE CourseID = @CourseID AND LecturerID = @LecturerID", con);
+                        accessCmd.Parameters.AddWithValue("@CourseID", courseId);
+                        accessCmd.Parameters.AddWithValue("@LecturerID", lecturerId);
+
+                        int moduleCount = (int)accessCmd.ExecuteScalar();
+                        if (moduleCount == 0)
+                        {
+                            ShowMessage("You don't have permission to edit this course.", "error");
+                            return;
+                        }
+
                         SqlCommand updateCmd = new SqlCommand(@"
                             UPDATE Courses 
                             SET CourseName = @CourseName, Description = @Description, Category = @Category
@@ -403,9 +577,15 @@ namespace assignmentDraft1
                         updateCmd.Parameters.AddWithValue("@Description", txtCourseDescription.Text.Trim());
                         updateCmd.Parameters.AddWithValue("@Category", txtCategory.Text.Trim());
 
-                        updateCmd.ExecuteNonQuery();
-
-                        ShowMessage("Course updated successfully!", "green");
+                        int rowsAffected = updateCmd.ExecuteNonQuery();
+                        if (rowsAffected > 0)
+                        {
+                            ShowMessage($"Course '{txtCourseName.Text.Trim()}' updated successfully!", "success");
+                        }
+                        else
+                        {
+                            ShowMessage("No changes were made to the course.", "error");
+                        }
                     }
 
                     // Clear form and reload
@@ -418,7 +598,7 @@ namespace assignmentDraft1
                 }
                 catch (Exception ex)
                 {
-                    ShowMessage("Error: " + ex.Message, "red");
+                    ShowMessage("Error saving course: " + ex.Message, "error");
                 }
             }
         }
@@ -427,19 +607,31 @@ namespace assignmentDraft1
         {
             if (string.IsNullOrWhiteSpace(txtCourseName.Text))
             {
-                ShowMessage("Please enter course name.", "red");
+                ShowMessage("Please enter course name.", "error");
+                return false;
+            }
+
+            if (txtCourseName.Text.Trim().Length < 3)
+            {
+                ShowMessage("Course name must be at least 3 characters long.", "error");
                 return false;
             }
 
             if (string.IsNullOrWhiteSpace(txtCourseDescription.Text))
             {
-                ShowMessage("Please enter course description.", "red");
+                ShowMessage("Please enter course description.", "error");
+                return false;
+            }
+
+            if (txtCourseDescription.Text.Trim().Length < 10)
+            {
+                ShowMessage("Course description must be at least 10 characters long.", "error");
                 return false;
             }
 
             if (string.IsNullOrWhiteSpace(txtCategory.Text))
             {
-                ShowMessage("Please enter course category.", "red");
+                ShowMessage("Please enter course category.", "error");
                 return false;
             }
 
@@ -466,7 +658,7 @@ namespace assignmentDraft1
                 int count = (int)cmd.ExecuteScalar();
                 if (count > 0)
                 {
-                    ShowMessage("A course with this name already exists.", "red");
+                    ShowMessage("A course with this name already exists. Please choose a different name.", "error");
                     return false;
                 }
             }
@@ -482,15 +674,43 @@ namespace assignmentDraft1
             txtCategory.Text = "";
         }
 
-        private void ShowMessage(string message, string color)
+        private void ShowMessage(string message, string type)
         {
             lblMessage.Text = message;
-            lblMessage.ForeColor = color == "green" ? System.Drawing.Color.Green : System.Drawing.Color.Red;
+            lblMessage.CssClass = $"message {type}";
             lblMessage.Visible = true;
 
-            // Hide message after 5 seconds
-            ClientScript.RegisterStartupScript(this.GetType(), "hideMessage",
-                "setTimeout(function(){ document.getElementById('" + lblMessage.ClientID + "').style.display = 'none'; }, 5000);", true);
+            // Add client-side styling and auto-hide
+            string messageClass = type == "error" ? "error" : "success";
+            string script = $@"
+                var msgElement = document.getElementById('{lblMessage.ClientID}');
+                if (msgElement) {{
+                    msgElement.className = 'message {messageClass}';
+                    msgElement.style.display = 'block';
+                    setTimeout(function() {{
+                        msgElement.style.display = 'none';
+                    }}, 5000);
+                }}";
+
+            ClientScript.RegisterStartupScript(this.GetType(), "showMessage", script, true);
+        }
+
+        // Override for better error handling
+        protected override void OnError(EventArgs e)
+        {
+            Exception ex = Server.GetLastError();
+            if (ex != null)
+            {
+                System.Diagnostics.Debug.WriteLine("TeacherWebform Page Error: " + ex.Message);
+
+                // Clear the error
+                Server.ClearError();
+
+                // Show user-friendly message
+                ShowMessage("An unexpected error occurred. Please try again or contact support if the problem persists.", "error");
+            }
+
+            base.OnError(e);
         }
     }
 }
