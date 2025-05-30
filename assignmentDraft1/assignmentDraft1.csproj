@@ -1,4 +1,4 @@
-﻿<Project ToolsVersion="15.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+<Project ToolsVersion="15.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <Import Project="..\packages\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.2.0.1\build\net46\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.props" Condition="Exists('..\packages\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.2.0.1\build\net46\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.props')" />
   <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
   <PropertyGroup>
@@ -67,6 +67,7 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Content Include="adminDashboard.aspx" />
     <Content Include="App_Data\Database1.mdf" />
     <Content Include="App_Data\Database1_log.ldf">
       <DependentUpon>Database1.mdf</DependentUpon>
@@ -75,21 +76,35 @@
     <Content Include="assignments.aspx" />
     <Content Include="courses.html" />
     <Content Include="EditModules.aspx" />
+    <Content Include="editAssignment.aspx" />
+    <Content Include="gradeAssignment.aspx" />
     <Content Include="home.html" />
     <Content Include="homeWebform.aspx" />
     <Content Include="lessons.aspx" />
     <Content Include="login.aspx" />
     <Content Include="ManageModules.aspx" />
+    <Content Include="manageAssignments.aspx" />
+    <Content Include="manageCourses.aspx" />
+    <Content Include="manageUsers.aspx" />
     <Content Include="playlist.html" />
     <Content Include="Register.aspx" />
     <Content Include="register.html" />
     <Content Include="searchResults.aspx" />
+    <Content Include="systemReports.aspx" />
+    <Content Include="systemSettings.aspx" />
     <Content Include="TeacherWebform.aspx" />
     <Content Include="watch-video.html" />
     <Content Include="Web.config" />
     <Content Include="loginWebform.aspx" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="adminDashboard.aspx.cs">
+      <DependentUpon>adminDashboard.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="adminDashboard.aspx.designer.cs">
+      <DependentUpon>adminDashboard.aspx</DependentUpon>
+    </Compile>
     <Compile Include="assignment-details.aspx.cs">
       <DependentUpon>assignment-details.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
@@ -110,6 +125,20 @@
     </Compile>
     <Compile Include="EditModules.aspx.designer.cs">
       <DependentUpon>EditModules.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="editAssignment.aspx.cs">
+      <DependentUpon>editAssignment.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="editAssignment.aspx.designer.cs">
+      <DependentUpon>editAssignment.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="gradeAssignment.aspx.cs">
+      <DependentUpon>gradeAssignment.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="gradeAssignment.aspx.designer.cs">
+      <DependentUpon>gradeAssignment.aspx</DependentUpon>
     </Compile>
     <Compile Include="homeWebform.aspx.cs">
       <DependentUpon>homeWebform.aspx</DependentUpon>
@@ -132,6 +161,27 @@
     <Compile Include="ManageModules.aspx.designer.cs">
       <DependentUpon>ManageModules.aspx</DependentUpon>
     </Compile>
+    <Compile Include="manageAssignments.aspx.cs">
+      <DependentUpon>manageAssignments.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="manageAssignments.aspx.designer.cs">
+      <DependentUpon>manageAssignments.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="manageCourses.aspx.cs">
+      <DependentUpon>manageCourses.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="manageCourses.aspx.designer.cs">
+      <DependentUpon>manageCourses.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="manageUsers.aspx.cs">
+      <DependentUpon>manageUsers.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="manageUsers.aspx.designer.cs">
+      <DependentUpon>manageUsers.aspx</DependentUpon>
+    </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="loginWebform.aspx.cs">
       <DependentUpon>loginWebform.aspx</DependentUpon>
@@ -153,6 +203,20 @@
     </Compile>
     <Compile Include="searchResults.aspx.designer.cs">
       <DependentUpon>searchResults.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="systemReports.aspx.cs">
+      <DependentUpon>systemReports.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="systemReports.aspx.designer.cs">
+      <DependentUpon>systemReports.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="systemSettings.aspx.cs">
+      <DependentUpon>systemSettings.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="systemSettings.aspx.designer.cs">
+      <DependentUpon>systemSettings.aspx</DependentUpon>
     </Compile>
     <Compile Include="TeacherWebform.aspx.cs">
       <DependentUpon>TeacherWebform.aspx</DependentUpon>
@@ -202,7 +266,7 @@
     </PropertyGroup>
     <Error Condition="!Exists('..\packages\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.2.0.1\build\net46\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.props')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.2.0.1\build\net46\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.props'))" />
   </Target>
-  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it.
        Other similar extension points exist, see Microsoft.Common.targets.
   <Target Name="BeforeBuild">
   </Target>
