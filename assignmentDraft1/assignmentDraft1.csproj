@@ -87,6 +87,7 @@
     <Content Include="manageCourses.aspx" />
     <Content Include="manageUsers.aspx" />
     <Content Include="playlist.html" />
+    <Content Include="profile.aspx" />
     <Content Include="Register.aspx" />
     <Content Include="register.html" />
     <Content Include="searchResults.aspx" />
@@ -181,6 +182,12 @@
     </Compile>
     <Compile Include="manageUsers.aspx.designer.cs">
       <DependentUpon>manageUsers.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="profile.aspx.cs">
+      <DependentUpon>profile.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="profile.aspx.designer.cs">
+      <DependentUpon>profile.aspx</DependentUpon>
     </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="loginWebform.aspx.cs">
