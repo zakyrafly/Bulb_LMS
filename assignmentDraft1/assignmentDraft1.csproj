@@ -79,6 +79,7 @@
     <Content Include="homeWebform.aspx" />
     <Content Include="lessons.aspx" />
     <Content Include="login.aspx" />
+    <Content Include="manageAssignments.aspx" />
     <Content Include="manageCourses.aspx" />
     <Content Include="manageUsers.aspx" />
     <Content Include="playlist.html" />
@@ -125,6 +126,13 @@
     </Compile>
     <Compile Include="lessons.aspx.designer.cs">
       <DependentUpon>lessons.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="manageAssignments.aspx.cs">
+      <DependentUpon>manageAssignments.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="manageAssignments.aspx.designer.cs">
+      <DependentUpon>manageAssignments.aspx</DependentUpon>
     </Compile>
     <Compile Include="manageCourses.aspx.cs">
       <DependentUpon>manageCourses.aspx</DependentUpon>
