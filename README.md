@@ -10,4 +10,4 @@ Student (Web Development Course): wb@gmail.com, 123
 
 Lecturer (Web Development Course): sipa@gmail.com, 123
 
-Admin: admin@gmail.com, admin
+Admin: admin@gmail.com, 123
