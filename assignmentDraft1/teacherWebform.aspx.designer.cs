@@ -9,8 +9,11 @@
 
 namespace assignmentDraft1
 {
+
+
     public partial class TeacherWebform
     {
+
         /// <summary>
         /// form1 control.
         /// </summary>
@@ -147,15 +150,6 @@ namespace assignmentDraft1
         protected global::System.Web.UI.WebControls.Panel pnlNoAssignments;
 
         /// <summary>
-        /// lblMessage control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.Label lblMessage;
-
-        /// <summary>
         /// hfCourseID control.
         /// </summary>
         /// <remarks>
@@ -199,5 +193,14 @@ namespace assignmentDraft1
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.Button BtnSaveCourse;
+
+        /// <summary>
+        /// lblMessage control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Label lblMessage;
     }
 }
