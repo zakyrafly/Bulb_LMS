@@ -13,9 +13,7 @@ x86/
 [Oo]bj/
 
 # Database files
-*.mdf
-*.ldf
-*.ndf
+
 
 # ASP.NET Scaffolding
 ScaffoldingReadMe.txt
