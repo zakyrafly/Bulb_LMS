@@ -3,6 +3,22 @@
   "WorkspaceRootPath": "C:\\Users\\LENOVO Legion Ryzen5\\source\\repos\\zakyrafly\\assignmentDraft1copy\\",
   "Documents": [
     {
+      "AbsoluteMoniker": "D:0:0:{F95A1954-3C32-4CBB-9263-3E3A2A31C6D1}|assignmentDraft1\\assignmentDraft1.csproj|c:\\users\\lenovo legion ryzen5\\source\\repos\\zakyrafly\\assignmentdraft1copy\\assignmentdraft1\\systemreports.aspx.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{F95A1954-3C32-4CBB-9263-3E3A2A31C6D1}|assignmentDraft1\\assignmentDraft1.csproj|solutionrelative:assignmentdraft1\\systemreports.aspx.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{F95A1954-3C32-4CBB-9263-3E3A2A31C6D1}|assignmentDraft1\\assignmentDraft1.csproj|c:\\users\\lenovo legion ryzen5\\source\\repos\\zakyrafly\\assignmentdraft1copy\\assignmentdraft1\\systemreports.aspx||{57312C73-6202-49E9-B1E1-40EA1A6DC1F6}",
+      "RelativeMoniker": "D:0:0:{F95A1954-3C32-4CBB-9263-3E3A2A31C6D1}|assignmentDraft1\\assignmentDraft1.csproj|solutionrelative:assignmentdraft1\\systemreports.aspx||{57312C73-6202-49E9-B1E1-40EA1A6DC1F6}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{F95A1954-3C32-4CBB-9263-3E3A2A31C6D1}|assignmentDraft1\\assignmentDraft1.csproj|c:\\users\\lenovo legion ryzen5\\source\\repos\\zakyrafly\\assignmentdraft1copy\\assignmentdraft1\\systemsettings.aspx||{57312C73-6202-49E9-B1E1-40EA1A6DC1F6}",
+      "RelativeMoniker": "D:0:0:{F95A1954-3C32-4CBB-9263-3E3A2A31C6D1}|assignmentDraft1\\assignmentDraft1.csproj|solutionrelative:assignmentdraft1\\systemsettings.aspx||{57312C73-6202-49E9-B1E1-40EA1A6DC1F6}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{F95A1954-3C32-4CBB-9263-3E3A2A31C6D1}|assignmentDraft1\\assignmentDraft1.csproj|c:\\users\\lenovo legion ryzen5\\source\\repos\\zakyrafly\\assignmentdraft1copy\\assignmentdraft1\\systemsettings.aspx.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{F95A1954-3C32-4CBB-9263-3E3A2A31C6D1}|assignmentDraft1\\assignmentDraft1.csproj|solutionrelative:assignmentdraft1\\systemsettings.aspx.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
       "AbsoluteMoniker": "D:0:0:{F95A1954-3C32-4CBB-9263-3E3A2A31C6D1}|assignmentDraft1\\assignmentDraft1.csproj|c:\\users\\lenovo legion ryzen5\\source\\repos\\zakyrafly\\assignmentdraft1copy\\assignmentdraft1\\manageassignments.aspx.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
       "RelativeMoniker": "D:0:0:{F95A1954-3C32-4CBB-9263-3E3A2A31C6D1}|assignmentDraft1\\assignmentDraft1.csproj|solutionrelative:assignmentdraft1\\manageassignments.aspx.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
@@ -79,6 +95,58 @@
             {
               "$type": "Document",
               "DocumentIndex": 0,
+              "Title": "systemReports.aspx.cs",
+              "DocumentMoniker": "C:\\Users\\LENOVO Legion Ryzen5\\source\\repos\\zakyrafly\\assignmentDraft1copy\\assignmentDraft1\\systemReports.aspx.cs",
+              "RelativeDocumentMoniker": "assignmentDraft1\\systemReports.aspx.cs",
+              "ToolTip": "C:\\Users\\LENOVO Legion Ryzen5\\source\\repos\\zakyrafly\\assignmentDraft1copy\\assignmentDraft1\\systemReports.aspx.cs",
+              "RelativeToolTip": "assignmentDraft1\\systemReports.aspx.cs",
+              "ViewState": "AgIAABAAAAAAAAAAAAAQwB8CAAABAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-05-30T16:29:26.185Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 1,
+              "Title": "systemReports.aspx",
+              "DocumentMoniker": "C:\\Users\\LENOVO Legion Ryzen5\\source\\repos\\zakyrafly\\assignmentDraft1copy\\assignmentDraft1\\systemReports.aspx",
+              "RelativeDocumentMoniker": "assignmentDraft1\\systemReports.aspx",
+              "ToolTip": "C:\\Users\\LENOVO Legion Ryzen5\\source\\repos\\zakyrafly\\assignmentDraft1copy\\assignmentDraft1\\systemReports.aspx",
+              "RelativeToolTip": "assignmentDraft1\\systemReports.aspx",
+              "LogicalView": "7651a703-06e5-11d1-8ebd-00a0c90f26ea",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000195|",
+              "WhenOpened": "2025-05-30T16:29:05.519Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 3,
+              "Title": "systemSettings.aspx.cs",
+              "DocumentMoniker": "C:\\Users\\LENOVO Legion Ryzen5\\source\\repos\\zakyrafly\\assignmentDraft1copy\\assignmentDraft1\\systemSettings.aspx.cs",
+              "RelativeDocumentMoniker": "assignmentDraft1\\systemSettings.aspx.cs",
+              "ToolTip": "C:\\Users\\LENOVO Legion Ryzen5\\source\\repos\\zakyrafly\\assignmentDraft1copy\\assignmentDraft1\\systemSettings.aspx.cs",
+              "RelativeToolTip": "assignmentDraft1\\systemSettings.aspx.cs",
+              "ViewState": "AgIAAGkBAAAAAAAAAAAqwLYBAAABAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-05-30T16:21:00.581Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 2,
+              "Title": "systemSettings.aspx",
+              "DocumentMoniker": "C:\\Users\\LENOVO Legion Ryzen5\\source\\repos\\zakyrafly\\assignmentDraft1copy\\assignmentDraft1\\systemSettings.aspx",
+              "RelativeDocumentMoniker": "assignmentDraft1\\systemSettings.aspx",
+              "ToolTip": "C:\\Users\\LENOVO Legion Ryzen5\\source\\repos\\zakyrafly\\assignmentDraft1copy\\assignmentDraft1\\systemSettings.aspx",
+              "RelativeToolTip": "assignmentDraft1\\systemSettings.aspx",
+              "LogicalView": "7651a703-06e5-11d1-8ebd-00a0c90f26ea",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000195|",
+              "WhenOpened": "2025-05-30T16:20:36.826Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 4,
               "Title": "manageAssignments.aspx.cs",
               "DocumentMoniker": "C:\\Users\\LENOVO Legion Ryzen5\\source\\repos\\zakyrafly\\assignmentDraft1copy\\assignmentDraft1\\manageAssignments.aspx.cs",
               "RelativeDocumentMoniker": "assignmentDraft1\\manageAssignments.aspx.cs",
@@ -91,7 +159,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 1,
+              "DocumentIndex": 5,
               "Title": "editAssignment.aspx.cs",
               "DocumentMoniker": "C:\\Users\\LENOVO Legion Ryzen5\\source\\repos\\zakyrafly\\assignmentDraft1copy\\assignmentDraft1\\editAssignment.aspx.cs",
               "RelativeDocumentMoniker": "assignmentDraft1\\editAssignment.aspx.cs",
@@ -104,7 +172,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 2,
+              "DocumentIndex": 6,
               "Title": "editAssignment.aspx",
               "DocumentMoniker": "C:\\Users\\LENOVO Legion Ryzen5\\source\\repos\\zakyrafly\\assignmentDraft1copy\\assignmentDraft1\\editAssignment.aspx",
               "RelativeDocumentMoniker": "assignmentDraft1\\editAssignment.aspx",
@@ -117,7 +185,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 4,
+              "DocumentIndex": 8,
               "Title": "gradeAssignment.aspx.cs",
               "DocumentMoniker": "C:\\Users\\LENOVO Legion Ryzen5\\source\\repos\\zakyrafly\\assignmentDraft1copy\\assignmentDraft1\\gradeAssignment.aspx.cs",
               "RelativeDocumentMoniker": "assignmentDraft1\\gradeAssignment.aspx.cs",
@@ -130,7 +198,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 5,
+              "DocumentIndex": 9,
               "Title": "gradeAssignment.aspx",
               "DocumentMoniker": "C:\\Users\\LENOVO Legion Ryzen5\\source\\repos\\zakyrafly\\assignmentDraft1copy\\assignmentDraft1\\gradeAssignment.aspx",
               "RelativeDocumentMoniker": "assignmentDraft1\\gradeAssignment.aspx",
@@ -143,7 +211,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 8,
+              "DocumentIndex": 12,
               "Title": "dbo.Users [Data]",
               "DocumentMoniker": "ViewDataWindow_MSSQL__/_LocalDB__MSSQLLocalDB/C__USERS_LENOVO_LEGION_RYZEN5_SOURCE_REPOS_ZAKYRAFLY_ASSIGNMENTDRAFT1COPY_ASSIGNMENTDRAFT1_APP_DATA_DATABASE1.MDF/True/SqlTable/dbo.Users.sql",
               "ToolTip": "dbo.Users [Data]",
@@ -153,7 +221,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 6,
+              "DocumentIndex": 10,
               "Title": "loginWebform.aspx.cs",
               "DocumentMoniker": "C:\\Users\\LENOVO Legion Ryzen5\\source\\repos\\zakyrafly\\assignmentDraft1copy\\assignmentDraft1\\loginWebform.aspx.cs",
               "RelativeDocumentMoniker": "assignmentDraft1\\loginWebform.aspx.cs",
@@ -166,7 +234,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 10,
+              "DocumentIndex": 14,
               "Title": "loginWebform.aspx",
               "DocumentMoniker": "C:\\Users\\LENOVO Legion Ryzen5\\source\\repos\\zakyrafly\\assignmentDraft1copy\\assignmentDraft1\\loginWebform.aspx",
               "RelativeDocumentMoniker": "assignmentDraft1\\loginWebform.aspx",
@@ -179,7 +247,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 9,
+              "DocumentIndex": 13,
               "Title": "style.css",
               "DocumentMoniker": "C:\\Users\\LENOVO Legion Ryzen5\\source\\repos\\zakyrafly\\assignmentDraft1copy\\assignmentDraft1\\css\\style.css",
               "RelativeDocumentMoniker": "assignmentDraft1\\css\\style.css",
@@ -192,7 +260,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 3,
+              "DocumentIndex": 7,
               "Title": "homeWebform.aspx",
               "DocumentMoniker": "C:\\Users\\LENOVO Legion Ryzen5\\source\\repos\\zakyrafly\\assignmentDraft1copy\\assignmentDraft1\\homeWebform.aspx",
               "RelativeDocumentMoniker": "assignmentDraft1\\homeWebform.aspx",
@@ -205,7 +273,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 7,
+              "DocumentIndex": 11,
               "Title": "SQLQuery1.sql ",
               "DocumentMoniker": "C:\\Users\\LENOVO Legion Ryzen5\\AppData\\Local\\Temp\\z1nt5e1d..sql",
               "RelativeDocumentMoniker": "..\\..\\..\\..\\AppData\\Local\\Temp\\z1nt5e1d..sql",
@@ -216,7 +284,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 12,
+              "DocumentIndex": 16,
               "Title": "Web.config",
               "DocumentMoniker": "C:\\Users\\LENOVO Legion Ryzen5\\source\\repos\\zakyrafly\\assignmentDraft1copy\\assignmentDraft1\\Web.config",
               "RelativeDocumentMoniker": "assignmentDraft1\\Web.config",
@@ -229,7 +297,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 11,
+              "DocumentIndex": 15,
               "Title": "assignments.aspx.cs",
               "DocumentMoniker": "C:\\Users\\LENOVO Legion Ryzen5\\source\\repos\\zakyrafly\\assignmentDraft1copy\\assignmentDraft1\\assignments.aspx.cs",
               "RelativeDocumentMoniker": "assignmentDraft1\\assignments.aspx.cs",
@@ -242,7 +310,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 14,
+              "DocumentIndex": 18,
               "Title": "homeWebform.aspx.designer.cs",
               "DocumentMoniker": "C:\\Users\\LENOVO Legion Ryzen5\\source\\repos\\zakyrafly\\assignmentDraft1copy\\assignmentDraft1\\homeWebform.aspx.designer.cs",
               "RelativeDocumentMoniker": "assignmentDraft1\\homeWebform.aspx.designer.cs",
@@ -255,7 +323,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 13,
+              "DocumentIndex": 17,
               "Title": "homeWebform.aspx.cs",
               "DocumentMoniker": "C:\\Users\\LENOVO Legion Ryzen5\\source\\repos\\zakyrafly\\assignmentDraft1copy\\assignmentDraft1\\homeWebform.aspx.cs",
               "RelativeDocumentMoniker": "assignmentDraft1\\homeWebform.aspx.cs",

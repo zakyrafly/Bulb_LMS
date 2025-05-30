@@ -88,6 +88,8 @@
     <Content Include="Register.aspx" />
     <Content Include="register.html" />
     <Content Include="searchResults.aspx" />
+    <Content Include="systemReports.aspx" />
+    <Content Include="systemSettings.aspx" />
     <Content Include="TeacherWebform.aspx" />
     <Content Include="watch-video.html" />
     <Content Include="Web.config" />
@@ -185,6 +187,20 @@
     </Compile>
     <Compile Include="searchResults.aspx.designer.cs">
       <DependentUpon>searchResults.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="systemReports.aspx.cs">
+      <DependentUpon>systemReports.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="systemReports.aspx.designer.cs">
+      <DependentUpon>systemReports.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="systemSettings.aspx.cs">
+      <DependentUpon>systemSettings.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="systemSettings.aspx.designer.cs">
+      <DependentUpon>systemSettings.aspx</DependentUpon>
     </Compile>
     <Compile Include="TeacherWebform.aspx.cs">
       <DependentUpon>TeacherWebform.aspx</DependentUpon>
