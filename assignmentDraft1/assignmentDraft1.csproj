@@ -75,6 +75,8 @@
     <Content Include="assignment-details.aspx" />
     <Content Include="assignments.aspx" />
     <Content Include="courses.html" />
+    <Content Include="editAssignment.aspx" />
+    <Content Include="gradeAssignment.aspx" />
     <Content Include="home.html" />
     <Content Include="homeWebform.aspx" />
     <Content Include="lessons.aspx" />
@@ -112,6 +114,20 @@
     </Compile>
     <Compile Include="assignments.aspx.designer.cs">
       <DependentUpon>assignments.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="editAssignment.aspx.cs">
+      <DependentUpon>editAssignment.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="editAssignment.aspx.designer.cs">
+      <DependentUpon>editAssignment.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="gradeAssignment.aspx.cs">
+      <DependentUpon>gradeAssignment.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="gradeAssignment.aspx.designer.cs">
+      <DependentUpon>gradeAssignment.aspx</DependentUpon>
     </Compile>
     <Compile Include="homeWebform.aspx.cs">
       <DependentUpon>homeWebform.aspx</DependentUpon>

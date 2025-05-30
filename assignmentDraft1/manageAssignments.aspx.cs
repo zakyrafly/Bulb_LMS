@@ -265,8 +265,128 @@ namespace assignmentDraft1
 
         protected void btnExportReport_Click(object sender, EventArgs e)
         {
-            // Export functionality can be implemented here
-            ShowMessage("Export feature coming soon!", "blue");
+            try
+            {
+                string cs = ConfigurationManager.ConnectionStrings["dbConnection"].ConnectionString;
+                using (SqlConnection con = new SqlConnection(cs))
+                {
+                    con.Open();
+
+                    // Get comprehensive assignment data for export
+                    SqlCommand cmd = new SqlCommand(@"
+                        SELECT 
+                            A.AssignmentID,
+                            A.Title,
+                            A.Description,
+                            A.DueDate,
+                            A.MaxPoints,
+                            CASE WHEN A.IsActive = 1 THEN 'Active' ELSE 'Inactive' END AS Status,
+                            C.CourseName,
+                            M.Title AS ModuleTitle,
+                            ISNULL(SubmissionStats.TotalSubmissions, 0) AS TotalSubmissions,
+                            ISNULL(SubmissionStats.GradedSubmissions, 0) AS GradedSubmissions,
+                            ISNULL(EnrollmentStats.EnrolledStudents, 0) AS EnrolledStudents,
+                            CASE 
+                                WHEN A.DueDate < GETDATE() THEN 'Overdue'
+                                WHEN A.DueDate < DATEADD(day, 7, GETDATE()) THEN 'Due Soon'
+                                ELSE 'Active'
+                            END AS DueStatus,
+                            CASE 
+                                WHEN ISNULL(EnrollmentStats.EnrolledStudents, 0) = 0 THEN 0
+                                ELSE ROUND((CAST(ISNULL(SubmissionStats.TotalSubmissions, 0) AS FLOAT) / ISNULL(EnrollmentStats.EnrolledStudents, 1)) * 100, 1)
+                            END AS SubmissionRate
+                        FROM Assignments A
+                        JOIN Modules M ON A.ModuleID = M.ModuleID
+                        JOIN Courses C ON M.CourseID = C.CourseID
+                        LEFT JOIN (
+                            SELECT 
+                                AssignmentID,
+                                COUNT(*) AS TotalSubmissions,
+                                SUM(CASE WHEN G.GradeID IS NOT NULL THEN 1 ELSE 0 END) AS GradedSubmissions
+                            FROM AssignmentSubmissions S
+                            LEFT JOIN AssignmentGrades G ON S.SubmissionID = G.SubmissionID
+                            WHERE S.Status = 'Submitted'
+                            GROUP BY AssignmentID
+                        ) SubmissionStats ON A.AssignmentID = SubmissionStats.AssignmentID
+                        LEFT JOIN (
+                            SELECT 
+                                M.CourseID,
+                                COUNT(DISTINCT UC.UserID) AS EnrolledStudents
+                            FROM Modules M
+                            JOIN UserCourses UC ON M.CourseID = UC.CourseID
+                            GROUP BY M.CourseID
+                        ) EnrollmentStats ON C.CourseID = EnrollmentStats.CourseID
+                        WHERE A.IsActive = 1
+                        ORDER BY A.DueDate", con);
+
+                    SqlDataAdapter da = new SqlDataAdapter(cmd);
+                    DataTable dt = new DataTable();
+                    da.Fill(dt);
+
+                    // Generate CSV content
+                    System.Text.StringBuilder csv = new System.Text.StringBuilder();
+
+                    // Add header with report metadata
+                    csv.AppendLine("Assignment Report - Generated: " + DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss"));
+                    csv.AppendLine("Total Assignments: " + dt.Rows.Count);
+                    csv.AppendLine(""); // Empty line for separation
+
+                    // Add column headers
+                    csv.AppendLine("Assignment ID,Title,Course,Module,Due Date,Max Points,Status,Due Status,Total Submissions,Graded,Pending,Enrolled Students,Submission Rate %,Description");
+
+                    // Add data rows
+                    foreach (DataRow row in dt.Rows)
+                    {
+                        string[] values = {
+                            row["AssignmentID"].ToString(),
+                            EscapeCsvValue(row["Title"].ToString()),
+                            EscapeCsvValue(row["CourseName"].ToString()),
+                            EscapeCsvValue(row["ModuleTitle"].ToString()),
+                            Convert.ToDateTime(row["DueDate"]).ToString("yyyy-MM-dd HH:mm"),
+                            row["MaxPoints"].ToString(),
+                            row["Status"].ToString(),
+                            row["DueStatus"].ToString(),
+                            row["TotalSubmissions"].ToString(),
+                            row["GradedSubmissions"].ToString(),
+                            (Convert.ToInt32(row["TotalSubmissions"]) - Convert.ToInt32(row["GradedSubmissions"])).ToString(),
+                            row["EnrolledStudents"].ToString(),
+                            row["SubmissionRate"].ToString() + "%",
+                            EscapeCsvValue(row["Description"].ToString())
+                        };
+
+                        csv.AppendLine(string.Join(",", values));
+                    }
+
+                    // Set response headers for file download
+                    Response.Clear();
+                    Response.ContentType = "text/csv";
+                    Response.AddHeader("Content-Disposition",
+                        $"attachment; filename=Assignment_Report_{DateTime.Now:yyyyMMdd_HHmmss}.csv");
+
+                    // Write CSV content to response
+                    Response.Write(csv.ToString());
+                    Response.End();
+                }
+            }
+            catch (Exception ex)
+            {
+                ShowMessage("Error generating report: " + ex.Message, "red");
+            }
+        }
+
+        // Helper method to escape CSV values that contain commas, quotes, or newlines
+        private string EscapeCsvValue(string value)
+        {
+            if (string.IsNullOrEmpty(value))
+                return "";
+
+            // If value contains comma, quote, or newline, wrap in quotes and escape internal quotes
+            if (value.Contains(",") || value.Contains("\"") || value.Contains("\n") || value.Contains("\r"))
+            {
+                return "\"" + value.Replace("\"", "\"\"") + "\"";
+            }
+
+            return value;
         }
 
         protected void assignmentRepeater_ItemCommand(object source, RepeaterCommandEventArgs e)
