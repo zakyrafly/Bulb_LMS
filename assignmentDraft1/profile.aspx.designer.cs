@@ -366,33 +366,6 @@ namespace assignmentDraft1
         protected global::System.Web.UI.WebControls.Label lblModuleCount;
 
         /// <summary>
-        /// lblStudentCount control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.Label lblStudentCount;
-
-        /// <summary>
-        /// lblCreatedAssignments control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.Label lblCreatedAssignments;
-
-        /// <summary>
-        /// lecturerModulesRepeater control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.Repeater lecturerModulesRepeater;
-
-        /// <summary>
         /// pnlAdminInfo control.
         /// </summary>
         /// <remarks>

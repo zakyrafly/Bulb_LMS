@@ -327,19 +327,22 @@
    <div id="close-btn">
       <i class="fas fa-times"></i>
    </div>
+
    <div class="profile">
       <img src="images/pic-1.jpg" class="image" alt="">
-      <h3 class="name"><asp:Label ID="lblSidebarName" runat="server" Text=""></asp:Label></h3>
-      <p class="role"><asp:Label ID="lblSidebarRole" runat="server" Text=""></asp:Label></p>
+      <h3 class="name"><asp:Label ID="lblSidebarName" runat="server" Text="Student Name"></asp:Label></h3>
+      <p class="role"><asp:Label ID="lblSidebarRole" runat="server" Text="student"></asp:Label></p>
       <a href="profile.aspx" class="btn">view profile</a>
    </div>
+
    <nav class="navbar">
-      <a href="homeWebform.aspx"><i class="fas fa-home"></i><span>home</span></a>
-      <a href="about.html"><i class="fas fa-question"></i><span>about</span></a>
-      <a href="courses.html"><i class="fas fa-graduation-cap"></i><span>courses</span></a>
-      <a href="teachers.html"><i class="fas fa-chalkboard-user"></i><span>teachers</span></a>
-      <a href="contact.html"><i class="fas fa-headset"></i><span>contact us</span></a>
-      <a href="loginWebform.aspx"><i class="fas fa-sign-out-alt"></i><span>logout</span></a>
+      <a href="homeWebform.aspx" class="active"><i class="fas fa-home"></i><span>Home</span></a>
+      <a href="courses.html"><i class="fas fa-graduation-cap"></i><span>My Courses</span></a>
+      <a href="assignments.html"><i class="fas fa-tasks"></i><span>Assignments</span></a>
+      <a href="grades.html"><i class="fas fa-star"></i><span>Grades</span></a>
+      <a href="calendar.html"><i class="fas fa-calendar"></i><span>Calendar</span></a>
+      <a href="profile.aspx"><i class="fas fa-user"></i><span>Profile</span></a>
+      <a href="loginWebform.aspx"><i class="fas fa-sign-out-alt"></i><span>Logout</span></a>
    </nav>
 </div>
 
@@ -502,30 +505,22 @@
                             <div class="stat-label">Modules</div>
                         </div>
                         <div class="stat-item">
-                            <span class="stat-number"><asp:Label ID="lblStudentCount" runat="server" Text="0"></asp:Label></span>
+                            <span class="stat-number">-</span>
                             <div class="stat-label">Students</div>
                         </div>
                         <div class="stat-item">
-                            <span class="stat-number"><asp:Label ID="lblCreatedAssignments" runat="server" Text="0"></asp:Label></span>
+                            <span class="stat-number">-</span>
                             <div class="stat-label">Assignments</div>
                         </div>
                     </div>
-                    
-                    <h4 style="margin: 1.5rem 0 1rem 0;">Teaching Modules</h4>
-                    <div class="course-list">
-                        <asp:Repeater ID="lecturerModulesRepeater" runat="server">
-                            <ItemTemplate>
-                                <div class="course-item">
-                                    <div class="course-info">
-                                        <h4><%# Eval("ModuleTitle") %></h4>
-                                        <p><%# Eval("CourseName") %> - <%# Eval("Description") %></p>
-                                    </div>
-                                    <div class="course-stats">
-                                        <div><%# Eval("AssignmentCount") %> Assignments</div>
-                                    </div>
-                                </div>
-                            </ItemTemplate>
-                        </asp:Repeater>
+    
+                    <div style="text-align: center; margin-top: 2rem; padding: 2rem; background: var(--light-bg); border-radius: 0.5rem;">
+                        <i class="fas fa-chalkboard-teacher" style="font-size: 3rem; color: var(--main-color); margin-bottom: 1rem;"></i>
+                        <h4 style="margin-bottom: 0.5rem; color: var(--black);">Teaching Dashboard</h4>
+                        <p style="color: var(--light-color); margin-bottom: 1.5rem;">Manage your courses and assignments</p>
+                        <a href="teacherWebform.aspx" class="btn" style="display: inline-block; text-decoration: none;">
+                            <i class="fas fa-arrow-right"></i> Go to Teaching Dashboard
+                        </a>
                     </div>
                 </asp:Panel>
 
