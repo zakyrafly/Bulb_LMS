@@ -67,22 +67,66 @@ namespace assignmentDraft1
 
         private void LoadSystemSettings()
         {
-            // Load default values (in a real system, these would come from a settings table)
-            txtSystemName.Text = "Bulb Learning Management System";
-            txtMaxPoints.Text = "100";
-            ddlAutoSave.SelectedValue = "10";
+            string cs = ConfigurationManager.ConnectionStrings["dbConnection"].ConnectionString;
+            using (SqlConnection con = new SqlConnection(cs))
+            {
+                con.Open();
 
-            chkSelfRegistration.Checked = true;
-            ddlDefaultRole.SelectedValue = "Student";
-            ddlPasswordLength.SelectedValue = "8";
+                // Load settings from database
+                SqlCommand settingsCmd = new SqlCommand("SELECT SettingName, SettingValue FROM SystemSettings", con);
+                SqlDataReader settingsReader = settingsCmd.ExecuteReader();
 
-            chkLateSubmissions.Checked = true;
-            txtLatePenalty.Text = "10";
-            chkAutoGrade.Checked = false;
+                while (settingsReader.Read())
+                {
+                    string settingName = settingsReader["SettingName"].ToString();
+                    string settingValue = settingsReader["SettingValue"].ToString();
 
-            chkEmailNotifications.Checked = true;
-            ddlDueReminders.SelectedValue = "3";
-            chkGradeNotifications.Checked = true;
+                    switch (settingName)
+                    {
+                        case "SystemName":
+                            txtSystemName.Text = settingValue;
+                            break;
+                        case "MaxAssignmentPoints":
+                            txtMaxPoints.Text = settingValue;
+                            break;
+                        case "AutoSaveFrequency":
+                            if (ddlAutoSave.Items.FindByValue(settingValue) != null)
+                                ddlAutoSave.SelectedValue = settingValue;
+                            break;
+                        case "AllowSelfRegistration":
+                            chkSelfRegistration.Checked = settingValue.ToLower() == "true";
+                            break;
+                        case "DefaultUserRole":
+                            if (ddlDefaultRole.Items.FindByValue(settingValue) != null)
+                                ddlDefaultRole.SelectedValue = settingValue;
+                            break;
+                        case "PasswordMinLength":
+                            if (ddlPasswordLength.Items.FindByValue(settingValue) != null)
+                                ddlPasswordLength.SelectedValue = settingValue;
+                            break;
+                        case "AllowLateSubmissions":
+                            chkLateSubmissions.Checked = settingValue.ToLower() == "true";
+                            break;
+                        case "LatePenaltyPercent":
+                            txtLatePenalty.Text = settingValue;
+                            break;
+                        case "AutoGradeSubmissions":
+                            chkAutoGrade.Checked = settingValue.ToLower() == "true";
+                            break;
+                        case "EmailNotifications":
+                            chkEmailNotifications.Checked = settingValue.ToLower() == "true";
+                            break;
+                        case "DueReminderDays":
+                            if (ddlDueReminders.Items.FindByValue(settingValue) != null)
+                                ddlDueReminders.SelectedValue = settingValue;
+                            break;
+                        case "GradeNotifications":
+                            chkGradeNotifications.Checked = settingValue.ToLower() == "true";
+                            break;
+                    }
+                }
+                settingsReader.Close();
+            }
         }
 
         private void LoadSystemStatistics()
@@ -109,6 +153,48 @@ namespace assignmentDraft1
             }
         }
 
+        // Helper method to update a setting in the database
+        private void UpdateSetting(string settingName, string settingValue)
+        {
+            string cs = ConfigurationManager.ConnectionStrings["dbConnection"].ConnectionString;
+            using (SqlConnection con = new SqlConnection(cs))
+            {
+                con.Open();
+
+                SqlCommand updateCmd = new SqlCommand(@"
+                    UPDATE SystemSettings 
+                    SET SettingValue = @SettingValue, ModifiedDate = GETDATE() 
+                    WHERE SettingName = @SettingName", con);
+                updateCmd.Parameters.AddWithValue("@SettingName", settingName);
+                updateCmd.Parameters.AddWithValue("@SettingValue", settingValue);
+
+                updateCmd.ExecuteNonQuery();
+            }
+        }
+
+        // Helper method to get a setting value from database
+        public static string GetSetting(string settingName, string defaultValue = "")
+        {
+            try
+            {
+                string cs = ConfigurationManager.ConnectionStrings["dbConnection"].ConnectionString;
+                using (SqlConnection con = new SqlConnection(cs))
+                {
+                    con.Open();
+
+                    SqlCommand cmd = new SqlCommand("SELECT SettingValue FROM SystemSettings WHERE SettingName = @SettingName", con);
+                    cmd.Parameters.AddWithValue("@SettingName", settingName);
+
+                    object result = cmd.ExecuteScalar();
+                    return result?.ToString() ?? defaultValue;
+                }
+            }
+            catch
+            {
+                return defaultValue;
+            }
+        }
+
         protected void btnSaveGeneral_Click(object sender, EventArgs e)
         {
             try
@@ -124,8 +210,11 @@ namespace assignmentDraft1
                     }
                 }
 
-                // In a real application, you would save these to a settings table
-                // For this demo, we'll just show a success message
+                // Save general settings to database
+                UpdateSetting("SystemName", txtSystemName.Text.Trim());
+                UpdateSetting("MaxAssignmentPoints", txtMaxPoints.Text.Trim());
+                UpdateSetting("AutoSaveFrequency", ddlAutoSave.SelectedValue);
+
                 ShowMessage("General settings saved successfully!", "green");
             }
             catch (Exception ex)
@@ -138,8 +227,11 @@ namespace assignmentDraft1
         {
             try
             {
-                // In a real application, you would save these to a settings table
-                // For this demo, we'll just show a success message
+                // Save user management settings to database
+                UpdateSetting("AllowSelfRegistration", chkSelfRegistration.Checked.ToString().ToLower());
+                UpdateSetting("DefaultUserRole", ddlDefaultRole.SelectedValue);
+                UpdateSetting("PasswordMinLength", ddlPasswordLength.SelectedValue);
+
                 ShowMessage("User management settings saved successfully!", "green");
             }
             catch (Exception ex)
@@ -163,6 +255,11 @@ namespace assignmentDraft1
                     }
                 }
 
+                // Save assignment settings to database
+                UpdateSetting("AllowLateSubmissions", chkLateSubmissions.Checked.ToString().ToLower());
+                UpdateSetting("LatePenaltyPercent", txtLatePenalty.Text.Trim());
+                UpdateSetting("AutoGradeSubmissions", chkAutoGrade.Checked.ToString().ToLower());
+
                 ShowMessage("Assignment settings saved successfully!", "green");
             }
             catch (Exception ex)
@@ -175,6 +272,11 @@ namespace assignmentDraft1
         {
             try
             {
+                // Save notification settings to database
+                UpdateSetting("EmailNotifications", chkEmailNotifications.Checked.ToString().ToLower());
+                UpdateSetting("DueReminderDays", ddlDueReminders.SelectedValue);
+                UpdateSetting("GradeNotifications", chkGradeNotifications.Checked.ToString().ToLower());
+
                 ShowMessage("Notification settings saved successfully!", "green");
             }
             catch (Exception ex)
@@ -272,6 +374,18 @@ namespace assignmentDraft1
                     exportData.AppendLine("BULB LMS SYSTEM DATA EXPORT");
                     exportData.AppendLine("Generated: " + DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss"));
                     exportData.AppendLine("=" + new string('=', 50));
+                    exportData.AppendLine();
+
+                    // Export System Settings
+                    exportData.AppendLine("SYSTEM SETTINGS:");
+                    exportData.AppendLine("SettingName,SettingValue,SettingDescription");
+                    SqlCommand settingsCmd = new SqlCommand("SELECT SettingName, SettingValue, SettingDescription FROM SystemSettings ORDER BY SettingName", con);
+                    SqlDataReader settingsReader = settingsCmd.ExecuteReader();
+                    while (settingsReader.Read())
+                    {
+                        exportData.AppendLine($"{EscapeCsvValue(settingsReader["SettingName"].ToString())},{EscapeCsvValue(settingsReader["SettingValue"].ToString())},{EscapeCsvValue(settingsReader["SettingDescription"]?.ToString() ?? "")}");
+                    }
+                    settingsReader.Close();
                     exportData.AppendLine();
 
                     // Export Users

@@ -29,6 +29,8 @@ namespace assignmentDraft1
                 LoadUserProfile();
                 LoadRoleSpecificData();
                 LoadRecentActivity();
+                // ADDED: Update password requirements display on initial load
+                UpdatePasswordRequirementsDisplay();
             }
         }
 
@@ -442,6 +444,9 @@ namespace assignmentDraft1
             passwordEdit.Visible = true;
             // FIXED: Use Attributes["class"] instead of CssClass
             passwordEdit.Attributes["class"] = "edit-form active";
+
+            // ADDED: Update password requirements display with current admin setting
+            UpdatePasswordRequirementsDisplay();
         }
 
         protected void btnSavePassword_Click(object sender, EventArgs e)
@@ -529,6 +534,50 @@ namespace assignmentDraft1
             {
                 Response.Redirect("searchResults.aspx?query=" + Server.UrlEncode(query));
             }
+        }
+
+        // ADDED: Method to update password requirements display with current admin setting
+        private void UpdatePasswordRequirementsDisplay()
+        {
+            int minLength = GetPasswordMinLength();
+
+            // Find the password requirements div and update it
+            // This would be easier with a server control, but we can use JavaScript injection
+            string script = $@"
+                var reqDiv = document.querySelector('.password-requirements');
+                if (reqDiv) {{
+                    reqDiv.innerHTML = '<strong>Password Requirements:</strong><br>• At least {minLength} characters long<br>• Use a strong, unique password';
+                }}";
+
+            ClientScript.RegisterStartupScript(this.GetType(), "updatePasswordReq", script, true);
+        }
+
+        // ADDED: Method to get password minimum length from admin settings
+        private int GetPasswordMinLength()
+        {
+            try
+            {
+                string cs = ConfigurationManager.ConnectionStrings["dbConnection"].ConnectionString;
+                using (SqlConnection con = new SqlConnection(cs))
+                {
+                    con.Open();
+
+                    SqlCommand cmd = new SqlCommand("SELECT SettingValue FROM SystemSettings WHERE SettingName = 'PasswordMinLength'", con);
+                    object result = cmd.ExecuteScalar();
+
+                    if (result != null && int.TryParse(result.ToString(), out int minLength))
+                    {
+                        return minLength;
+                    }
+                }
+            }
+            catch
+            {
+                // If there's any error, fall back to default
+            }
+
+            // Default fallback
+            return 6;
         }
 
         // FIXED: Make it public for data binding access
