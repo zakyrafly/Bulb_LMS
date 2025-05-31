@@ -6,7 +6,7 @@ When cloning the repo initially, to be able to run the program properly you have
 
 > format: username, password
 
-Student (Web Development Course): wb@gmail.com, 123
+Student (Web Development Course): wb@gmail.com, 12345678
 
 Lecturer (Web Development Course): sipa@gmail.com, 123
 
