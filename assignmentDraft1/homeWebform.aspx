@@ -9,8 +9,6 @@
    <title>Student Dashboard - Bulb LMS</title>
    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.2/css/all.min.css">
    <link rel="stylesheet" href="css/style.css">
-
-
 </head>
 <body>
     <form id="form1" runat="server">
@@ -305,38 +303,202 @@
 
 <script src="js/script.js"></script>
 <script>
-    // Enhanced JavaScript functionality
-    document.addEventListener('DOMContentLoaded', function () {
-        // Set welcome message based on time
-        setWelcomeMessage();
+    // Global variables
+    let allCards = [];
+    let currentFilter = 'all';
+    let currentSort = 'dueDate';
+    let currentSearch = '';
 
-        // Update current date/time
+    // Initialize when DOM is ready
+    document.addEventListener('DOMContentLoaded', function () {
+        console.log('DOM loaded, initializing...');
+        
+        // Set welcome message
+        setWelcomeMessage();
+        
+        // Update time
         updateDateTime();
         setInterval(updateDateTime, 1000);
-
-        // Initialize assignment filtering
-        initializeFiltering();
-
-        // Calculate and display statistics
-        calculateStatistics();
-
-        // Add smooth scrolling
+        
+        // Initialize filtering with delay to ensure ASP.NET is done
+        setTimeout(initializeSystem, 1000);
+        
+        // Add other initializations
         addSmoothScrolling();
-
-        // Initialize animations
         initializeAnimations();
     });
+
+    function initializeSystem() {
+        console.log('Initializing filtering system...');
+        
+        // Get all assignment cards
+        allCards = document.querySelectorAll('.assignment-card');
+        console.log('Found', allCards.length, 'assignment cards');
+        
+        // Setup filter buttons
+        setupFilterButtons();
+        
+        // Setup sort dropdown
+        setupSortDropdown();
+        
+        // Setup search input
+        setupSearchInput();
+        
+        // Calculate initial statistics
+        calculateStatistics();
+        
+        console.log('System initialized successfully');
+    }
+
+    function setupFilterButtons() {
+        const filterButtons = document.querySelectorAll('.quick-filter');
+        console.log('Setting up', filterButtons.length, 'filter buttons');
+        
+        filterButtons.forEach(button => {
+            button.addEventListener('click', function() {
+                console.log('Filter clicked:', this.getAttribute('data-filter'));
+                
+                // Remove active from all buttons
+                filterButtons.forEach(btn => btn.classList.remove('active'));
+                
+                // Add active to clicked button
+                this.classList.add('active');
+                
+                // Apply filter
+                currentFilter = this.getAttribute('data-filter');
+                applyAllFilters();
+            });
+        });
+    }
+
+    function setupSortDropdown() {
+        const sortSelect = document.getElementById('sortSelect');
+        if (sortSelect) {
+            console.log('Setting up sort dropdown');
+            sortSelect.addEventListener('change', function() {
+                console.log('Sort changed to:', this.value);
+                currentSort = this.value;
+                applyAllFilters();
+            });
+        }
+    }
+
+    function setupSearchInput() {
+        const searchInput = document.getElementById('assignmentSearch');
+        if (searchInput) {
+            console.log('Setting up search input');
+            searchInput.addEventListener('input', function() {
+                console.log('Search input:', this.value);
+                currentSearch = this.value.toLowerCase();
+                applyAllFilters();
+            });
+        }
+    }
+
+    function applyAllFilters() {
+        console.log('Applying filters - Filter:', currentFilter, 'Sort:', currentSort, 'Search:', currentSearch);
+        
+        let visibleCards = [];
+        
+        allCards.forEach(card => {
+            let show = true;
+            
+            // Apply status filter
+            if (currentFilter !== 'all') {
+                const cardStatus = card.getAttribute('data-status');
+                if (cardStatus !== currentFilter) {
+                    show = false;
+                }
+            }
+            
+            // Apply search filter
+            if (currentSearch && show) {
+                const title = (card.getAttribute('data-title') || '').toLowerCase();
+                const course = (card.getAttribute('data-course') || '').toLowerCase();
+                if (!title.includes(currentSearch) && !course.includes(currentSearch)) {
+                    show = false;
+                }
+            }
+            
+            // Show or hide card
+            if (show) {
+                card.style.display = 'block';
+                visibleCards.push(card);
+            } else {
+                card.style.display = 'none';
+            }
+        });
+        
+        console.log('Visible cards after filtering:', visibleCards.length);
+        
+        // Sort visible cards
+        sortCards(visibleCards);
+        
+        // Update empty state
+        updateEmptyState(visibleCards.length);
+        
+        // Update statistics
+        calculateStatistics();
+    }
+
+    function sortCards(cards) {
+        if (cards.length === 0) return;
+        
+        const container = document.getElementById('assignmentGrid');
+        if (!container) return;
+        
+        // Sort the array
+        cards.sort((a, b) => {
+            switch (currentSort) {
+                case 'dueDate':
+                    const dateA = new Date(a.getAttribute('data-due') || '9999-12-31');
+                    const dateB = new Date(b.getAttribute('data-due') || '9999-12-31');
+                    return dateA - dateB;
+                case 'course':
+                    const courseA = (a.getAttribute('data-course') || '').toLowerCase();
+                    const courseB = (b.getAttribute('data-course') || '').toLowerCase();
+                    return courseA.localeCompare(courseB);
+                case 'status':
+                    const statusA = a.getAttribute('data-status') || '';
+                    const statusB = b.getAttribute('data-status') || '';
+                    return statusA.localeCompare(statusB);
+                case 'title':
+                    const titleA = (a.getAttribute('data-title') || '').toLowerCase();
+                    const titleB = (b.getAttribute('data-title') || '').toLowerCase();
+                    return titleA.localeCompare(titleB);
+                default:
+                    return 0;
+            }
+        });
+        
+        // Reorder in DOM
+        cards.forEach(card => {
+            container.appendChild(card);
+        });
+    }
+
+    function updateEmptyState(visibleCount) {
+        const emptyPanel = document.querySelector('[id*="noAssignmentsPanel"]');
+        if (emptyPanel) {
+            if (visibleCount === 0) {
+                emptyPanel.style.display = 'block';
+            } else {
+                emptyPanel.style.display = 'none';
+            }
+        }
+    }
 
     function setWelcomeMessage() {
         const hour = new Date().getHours();
         const timeOfDayElement = document.getElementById('timeOfDay');
-
-        if (hour < 12) {
-            timeOfDayElement.textContent = 'Morning';
-        } else if (hour < 17) {
-            timeOfDayElement.textContent = 'Afternoon';
-        } else {
-            timeOfDayElement.textContent = 'Evening';
+        if (timeOfDayElement) {
+            if (hour < 12) {
+                timeOfDayElement.textContent = 'Morning';
+            } else if (hour < 17) {
+                timeOfDayElement.textContent = 'Afternoon';
+            } else {
+                timeOfDayElement.textContent = 'Evening';
+            }
         }
     }
 
@@ -357,7 +519,6 @@
         if (currentDateTime) {
             currentDateTime.textContent = now.toLocaleDateString('en-US', options);
         }
-
         if (updateTime) {
             updateTime.textContent = now.toLocaleTimeString('en-US', {
                 hour: '2-digit',
@@ -366,132 +527,22 @@
         }
     }
 
-    function initializeFiltering() {
-        const quickFilters = document.querySelectorAll('.quick-filter');
-        const sortSelect = document.getElementById('sortSelect');
-        const searchInput = document.getElementById('assignmentSearch');
-
-        // Quick filter functionality
-        quickFilters.forEach(filter => {
-            filter.addEventListener('click', function () {
-                quickFilters.forEach(f => f.classList.remove('active'));
-                this.classList.add('active');
-
-                const filterValue = this.getAttribute('data-filter');
-                filterAssignments(filterValue);
-            });
-        });
-
-        // Sort functionality
-        if (sortSelect) {
-            sortSelect.addEventListener('change', function () {
-                sortAssignments(this.value);
-            });
-        }
-
-        // Search functionality
-        if (searchInput) {
-            searchInput.addEventListener('input', function () {
-                searchAssignments(this.value);
-            });
-        }
-    }
-
-    function filterAssignments(status) {
-        const cards = document.querySelectorAll('.assignment-card');
-        let visibleCount = 0;
-
-        cards.forEach(card => {
-            const cardStatus = card.getAttribute('data-status');
-
-            if (status === 'all' || cardStatus === status) {
-                card.style.display = 'block';
-                card.classList.add('slide-in');
-                visibleCount++;
-            } else {
-                card.style.display = 'none';
-                card.classList.remove('slide-in');
-            }
-        });
-
-        updateEmptyState(visibleCount);
-    }
-
-    function sortAssignments(sortBy) {
-        const container = document.getElementById('assignmentGrid');
-        const cards = Array.from(container.querySelectorAll('.assignment-card'));
-
-        cards.sort((a, b) => {
-            switch (sortBy) {
-                case 'dueDate':
-                    const dateA = new Date(a.getAttribute('data-due'));
-                    const dateB = new Date(b.getAttribute('data-due'));
-                    return dateA - dateB;
-                case 'course':
-                    return a.getAttribute('data-course').localeCompare(b.getAttribute('data-course'));
-                case 'status':
-                    return a.getAttribute('data-status').localeCompare(b.getAttribute('data-status'));
-                case 'title':
-                    return a.getAttribute('data-title').localeCompare(b.getAttribute('data-title'));
-                default:
-                    return 0;
-            }
-        });
-
-        // Reorder DOM elements
-        cards.forEach(card => container.appendChild(card));
-    }
-
-    function searchAssignments(query) {
-        const cards = document.querySelectorAll('.assignment-card');
-        const searchTerm = query.toLowerCase();
-        let visibleCount = 0;
-
-        cards.forEach(card => {
-            const title = (card.getAttribute('data-title') || '').toLowerCase();
-            const course = (card.getAttribute('data-course') || '').toLowerCase();
-
-            if (!query || title.includes(searchTerm) || course.includes(searchTerm)) {
-                card.style.display = 'block';
-                visibleCount++;
-            } else {
-                card.style.display = 'none';
-            }
-        });
-
-        updateEmptyState(visibleCount);
-    }
-
-    function updateEmptyState(visibleCount) {
-        const emptyState = document.querySelector('.empty-state');
-
-        if (emptyState) {
-            if (visibleCount === 0) {
-                emptyState.style.display = 'block';
-            } else {
-                emptyState.style.display = 'none';
-            }
-        }
-    }
-
     function calculateStatistics() {
-        const cards = document.querySelectorAll('.assignment-card');
-        let total = cards.length;
+        const cards = document.querySelectorAll('.assignment-card[style*="block"], .assignment-card:not([style*="none"])');
+        let total = allCards.length;
         let pending = 0;
         let completed = 0;
         let gradeSum = 0;
         let gradeCount = 0;
 
-        cards.forEach(card => {
+        allCards.forEach(card => {
             const status = card.getAttribute('data-status');
-
             if (status === 'pending' || status === 'overdue') {
                 pending++;
             } else if (status === 'submitted' || status === 'graded') {
                 completed++;
             }
 
-            // Calculate average grade if available
             const gradeDisplay = card.querySelector('.grade-score');
             if (gradeDisplay) {
                 const gradeText = gradeDisplay.textContent;
@@ -503,7 +554,6 @@
             }
         });
 
-        // Update statistics with animation
         animateCounter('totalAssignments', total);
         animateCounter('pendingAssignments', pending);
         animateCounter('completedAssignments', completed);
@@ -544,13 +594,11 @@
     }
 
     function initializeAnimations() {
-        // Add staggered animation to cards
         const cards = document.querySelectorAll('.assignment-card, .course-card');
         cards.forEach((card, index) => {
             card.style.animationDelay = `${index * 0.1}s`;
         });
 
-        // Intersection Observer for animations
         const observerOptions = {
             threshold: 0.1,
             rootMargin: '0px 0px -50px 0px'
@@ -569,51 +617,53 @@
         });
     }
 
-    // Enhanced sidebar and header functionality (keeping existing)
-    let body = document.body;
-    let profile = document.querySelector('.header .flex .profile');
-    let search = document.querySelector('.header .flex .search-form');
-    let sideBar = document.querySelector('.side-bar');
+    // Sidebar functionality
+    document.addEventListener('DOMContentLoaded', function() {
+        const bodyElement = document.body;
+        const profile = document.querySelector('.header .flex .profile');
+        const search = document.querySelector('.header .flex .search-form');
+        const sideBar = document.querySelector('.side-bar');
 
-    document.querySelector('#user-btn')?.addEventListener('click', () => {
-        profile?.classList.toggle('active');
-        search?.classList.remove('active');
-    });
+        document.querySelector('#user-btn')?.addEventListener('click', () => {
+            profile?.classList.toggle('active');
+            search?.classList.remove('active');
+        });
 
-    document.querySelector('#search-btn')?.addEventListener('click', () => {
-        search?.classList.toggle('active');
-        profile?.classList.remove('active');
-    });
+        document.querySelector('#search-btn')?.addEventListener('click', () => {
+            search?.classList.toggle('active');
+            profile?.classList.remove('active');
+        });
 
-    document.querySelector('#menu-btn')?.addEventListener('click', () => {
-        sideBar?.classList.toggle('active');
-        body?.classList.toggle('active');
-    });
+        document.querySelector('#menu-btn')?.addEventListener('click', () => {
+            sideBar?.classList.toggle('active');
+            bodyElement?.classList.toggle('active');
+        });
 
-    document.querySelector('#close-btn')?.addEventListener('click', () => {
-        sideBar?.classList.remove('active');
-        body?.classList.remove('active');
-    });
-
-    document.querySelector('#toggle-btn')?.addEventListener('click', () => {
-        body?.classList.toggle('dark');
-    });
-
-    window.addEventListener('scroll', () => {
-        profile?.classList.remove('active');
-        search?.classList.remove('active');
-
-        if (window.innerWidth < 1200) {
+        document.querySelector('#close-btn')?.addEventListener('click', () => {
             sideBar?.classList.remove('active');
-            body?.classList.remove('active');
-        }
+            bodyElement?.classList.remove('active');
+        });
+
+        document.querySelector('#toggle-btn')?.addEventListener('click', () => {
+            bodyElement?.classList.toggle('dark');
+        });
+
+        window.addEventListener('scroll', () => {
+            profile?.classList.remove('active');
+            search?.classList.remove('active');
+
+            if (window.innerWidth < 1200) {
+                sideBar?.classList.remove('active');
+                bodyElement?.classList.remove('active');
+            }
+        });
     });
 
-    // Auto-refresh functionality
+    // Auto-refresh
     setInterval(() => {
         updateDateTime();
         calculateStatistics();
-    }, 60000); // Update every minute
+    }, 60000);
 </script>
 
     </form>

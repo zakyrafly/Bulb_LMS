@@ -447,7 +447,7 @@ section{
 .timeline-box .timeline-filters .box,
 .timeline-box .timeline-filters .select,
 .timeline-box .timeline-filters .search-input {
-   flex: 1 1 25rem;
+   flex: 1 1 5rem;
    font-size: 1.6rem;
    background-color: var(--light-bg);
    border-radius: .5rem;
