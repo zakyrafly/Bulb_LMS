@@ -59,7 +59,7 @@
           <a href="homeWebform.aspx" class="active"><i class="fas fa-home"></i><span>Home</span></a>
           <a href="courses.html"><i class="fas fa-graduation-cap"></i><span>My Courses</span></a>
           <a href="student-assignments.aspx"><i class="fas fa-tasks"></i><span>Assignments</span></a>
-          <a href="calendar.html"><i class="fas fa-calendar"></i><span>Calendar</span></a>
+          <a href="calendar.aspx"><i class="fas fa-calendar"></i><span>Calendar</span></a>
           <a href="profile.aspx"><i class="fas fa-user"></i><span>Profile</span></a>
           <a href="loginWebform.aspx"><i class="fas fa-sign-out-alt"></i><span>Logout</span></a>
        </nav>
