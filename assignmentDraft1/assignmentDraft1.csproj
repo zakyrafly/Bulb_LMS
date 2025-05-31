@@ -75,7 +75,6 @@
     <Content Include="assignment-details.aspx" />
     <Content Include="assignments.aspx" />
     <Content Include="courses.html" />
-    <Content Include="EditModules.aspx" />
     <Content Include="editAssignment.aspx" />
     <Content Include="gradeAssignment.aspx" />
     <Content Include="home.html" />
@@ -119,13 +118,6 @@
     </Compile>
     <Compile Include="assignments.aspx.designer.cs">
       <DependentUpon>assignments.aspx</DependentUpon>
-    </Compile>
-    <Compile Include="EditModules.aspx.cs">
-      <DependentUpon>EditModules.aspx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
-    </Compile>
-    <Compile Include="EditModules.aspx.designer.cs">
-      <DependentUpon>EditModules.aspx</DependentUpon>
     </Compile>
     <Compile Include="editAssignment.aspx.cs">
       <DependentUpon>editAssignment.aspx</DependentUpon>
