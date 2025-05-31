@@ -289,6 +289,27 @@ namespace assignmentDraft1
             }
         }
 
+        protected string GetNormalizedStatus(object status)
+        {
+            if (status == null) return "pending";
+
+            string statusStr = status.ToString().ToLower();
+
+            // Normalize status values for JavaScript filtering
+            switch (statusStr)
+            {
+                case "submitted":
+                    return "submitted";
+                case "overdue":
+                    return "overdue";
+                case "graded":
+                    return "graded";
+                case "pending":
+                default:
+                    return "pending";
+            }
+        }
+
         private string GetLetterGrade(double percentage)
         {
             if (percentage >= 90) return "A";

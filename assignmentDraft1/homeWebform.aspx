@@ -10,646 +10,7 @@
    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.2/css/all.min.css">
    <link rel="stylesheet" href="css/style.css">
 
-   <style>
-      /* Enhanced Dashboard Styles */
-      .dashboard-stats {
-         display: grid;
-         grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-         gap: 2rem;
-         margin-bottom: 3rem;
-      }
 
-      .stat-card {
-         background: linear-gradient(135deg, var(--main-color), var(--orange));
-         color: white !important;
-         padding: 2.5rem 2rem;
-         border-radius: 1.2rem;
-         box-shadow: 0 6px 20px rgba(0,0,0,0.15);
-         transition: transform 0.3s ease, box-shadow 0.3s ease;
-         position: relative;
-         overflow: hidden;
-         border: none;
-         min-height: 140px;
-         display: flex;
-         flex-direction: column;
-         justify-content: space-between;
-      }
-
-      .stat-card::before {
-         content: '';
-         position: absolute;
-         top: 0;
-         left: 0;
-         right: 0;
-         bottom: 0;
-         background: rgba(0, 0, 0, 0.05);
-         z-index: 1;
-      }
-
-      .stat-card * {
-         position: relative;
-         z-index: 2;
-         color: white !important;
-      }
-
-      .stat-card:hover {
-         transform: translateY(-8px);
-         box-shadow: 0 12px 30px rgba(0,0,0,0.25);
-      }
-
-      .stat-card:nth-child(2) {
-         background: linear-gradient(135deg, #3498db, #2980b9);
-      }
-
-      .stat-card:nth-child(3) {
-         background: linear-gradient(135deg, #27ae60, #229954);
-      }
-
-      .stat-card:nth-child(4) {
-         background: linear-gradient(135deg, #e74c3c, #c0392b);
-      }
-
-      .stat-header {
-         display: flex;
-         justify-content: space-between;
-         align-items: flex-start;
-         margin-bottom: 0.5rem;
-      }
-
-      .stat-number {
-         font-size: 3.5rem;
-         font-weight: 900;
-         line-height: 1;
-         color: white !important;
-         text-shadow: 0 3px 6px rgba(0,0,0,0.4);
-         margin: 0;
-      }
-
-      .stat-label {
-         font-size: 1.3rem;
-         font-weight: 600;
-         color: white !important;
-         text-shadow: 0 2px 4px rgba(0,0,0,0.4);
-         margin-top: 0.8rem;
-         opacity: 0.95;
-      }
-
-      .stat-icon {
-         font-size: 2.8rem;
-         color: white !important;
-         text-shadow: 0 2px 4px rgba(0,0,0,0.4);
-         opacity: 0.9;
-      }
-
-      /* Enhanced Timeline */
-      .timeline-box {
-         background: white;
-         border-radius: 1rem;
-         box-shadow: 0 4px 15px rgba(0,0,0,0.1);
-         overflow: hidden;
-      }
-
-      .timeline-header {
-         background: linear-gradient(135deg, var(--main-color), var(--orange));
-         color: white;
-         padding: 1.5rem 2rem;
-         display: flex;
-         justify-content: space-between;
-         align-items: center;
-      }
-
-      .timeline-filters {
-         background: #f8f9fa;
-         padding: 1.5rem 2rem;
-         border-bottom: 1px solid #eee;
-         display: grid;
-         grid-template-columns: 2fr 1fr 1.5fr;
-         gap: 2rem;
-         align-items: start;
-      }
-
-      .filter-group {
-         display: flex;
-         flex-direction: column;
-         gap: 0.8rem;
-      }
-
-      .filter-label {
-         font-size: 1.2rem;
-         font-weight: bold;
-         color: var(--black);
-         margin-bottom: 0.5rem;
-      }
-
-      .quick-filters {
-         display: flex;
-         gap: 0.5rem;
-         flex-wrap: wrap;
-      }
-
-      .quick-filter {
-         padding: 0.6rem 1.2rem;
-         background: white;
-         border: 2px solid #e1e5e9;
-         border-radius: 2rem;
-         cursor: pointer;
-         transition: all 0.3s;
-         font-size: 1.1rem;
-         font-weight: 500;
-         white-space: nowrap;
-      }
-
-      .quick-filter:hover, .quick-filter.active {
-         background: var(--main-color);
-         color: white;
-         border-color: var(--main-color);
-         transform: translateY(-1px);
-      }
-
-      /* Improved form controls */
-      .timeline-filters select {
-         width: 100%;
-         padding: 0.8rem 1rem;
-         border: 2px solid #e1e5e9;
-         border-radius: 0.5rem;
-         font-size: 1.2rem;
-         background: white;
-         cursor: pointer;
-         transition: all 0.3s;
-      }
-
-      .timeline-filters select:focus {
-         outline: none;
-         border-color: var(--main-color);
-         box-shadow: 0 0 0 3px rgba(139, 69, 19, 0.1);
-      }
-
-      .timeline-filters input[type="text"] {
-         width: 100%;
-         padding: 0.8rem 1rem;
-         border: 2px solid #e1e5e9;
-         border-radius: 0.5rem;
-         font-size: 1.2rem;
-         background: white;
-         transition: all 0.3s;
-      }
-
-      .timeline-filters input[type="text"]:focus {
-         outline: none;
-         border-color: var(--main-color);
-         box-shadow: 0 0 0 3px rgba(139, 69, 19, 0.1);
-      }
-
-      .timeline-filters input[type="text"]::placeholder {
-         color: #999;
-         font-style: italic;
-      }
-
-      /* Enhanced Assignment Cards */
-      .assignment-grid {
-         display: grid;
-         grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
-         gap: 1.5rem;
-         padding: 2rem;
-      }
-
-      .assignment-card {
-         background: white;
-         border-radius: 1rem;
-         box-shadow: 0 4px 15px rgba(0,0,0,0.1);
-         overflow: hidden;
-         transition: transform 0.3s ease, box-shadow 0.3s ease;
-         border-left: 5px solid var(--main-color);
-      }
-
-      .assignment-card:hover {
-         transform: translateY(-3px);
-         box-shadow: 0 8px 25px rgba(0,0,0,0.15);
-      }
-
-      .assignment-card.overdue {
-         border-left-color: #e74c3c;
-      }
-
-      .assignment-card.due-soon {
-         border-left-color: #f39c12;
-      }
-
-      .assignment-card.submitted {
-         border-left-color: #27ae60;
-      }
-
-      .assignment-header {
-         padding: 1.5rem;
-         border-bottom: 1px solid #f0f0f0;
-      }
-
-      .assignment-title {
-         font-size: 1.6rem;
-         font-weight: bold;
-         color: var(--black);
-         margin: 0 0 0.5rem 0;
-      }
-
-      .assignment-course {
-         color: var(--main-color);
-         font-weight: 600;
-         font-size: 1.2rem;
-      }
-
-      .assignment-body {
-         padding: 1.5rem;
-      }
-
-      .assignment-meta {
-         display: grid;
-         grid-template-columns: 1fr 1fr;
-         gap: 1rem;
-         margin-bottom: 1.5rem;
-      }
-
-      .meta-item {
-         display: flex;
-         align-items: center;
-         gap: 0.5rem;
-         font-size: 1.1rem;
-      }
-
-      .meta-icon {
-         color: var(--main-color);
-         width: 16px;
-      }
-
-      .status-badge {
-         display: inline-flex;
-         align-items: center;
-         gap: 0.5rem;
-         padding: 0.5rem 1rem;
-         border-radius: 2rem;
-         font-weight: bold;
-         font-size: 1.1rem;
-         margin-bottom: 1rem;
-      }
-
-      .status-pending {
-         background: #fff3cd;
-         color: #856404;
-      }
-
-      .status-submitted {
-         background: #d4edda;
-         color: #155724;
-      }
-
-      .status-overdue {
-         background: #f8d7da;
-         color: #721c24;
-      }
-
-      .status-graded {
-         background: #d1ecf1;
-         color: #0c5460;
-      }
-
-      .grade-display {
-         background: #f8f9fa;
-         padding: 1rem;
-         border-radius: 0.5rem;
-         margin-bottom: 1rem;
-         text-align: center;
-      }
-
-      .grade-score {
-         font-size: 1.8rem;
-         font-weight: bold;
-         color: var(--main-color);
-      }
-
-      .assignment-actions {
-         display: flex;
-         gap: 0.5rem;
-         justify-content: flex-end;
-      }
-
-      /* Enhanced Course Section */
-      .course-grid {
-         display: grid;
-         grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-         gap: 2rem;
-         margin-top: 2rem;
-      }
-
-      .course-card {
-         background: white;
-         border-radius: 1rem;
-         box-shadow: 0 4px 15px rgba(0,0,0,0.1);
-         overflow: hidden;
-         transition: transform 0.3s ease;
-      }
-
-      .course-card:hover {
-         transform: translateY(-5px);
-      }
-
-      .course-header {
-         background: linear-gradient(135deg, #3498db, #2980b9);
-         color: white;
-         padding: 1.5rem;
-      }
-
-      .course-title {
-         font-size: 1.6rem;
-         font-weight: bold;
-         margin: 0 0 0.5rem 0;
-      }
-
-      .course-lecturer {
-         display: flex;
-         align-items: center;
-         gap: 0.5rem;
-         opacity: 0.9;
-      }
-
-      .course-body {
-         padding: 1.5rem;
-      }
-
-      .course-progress {
-         margin: 1rem 0;
-      }
-
-      .progress-bar {
-         background: #e9ecef;
-         border-radius: 1rem;
-         height: 8px;
-         overflow: hidden;
-      }
-
-      .progress-fill {
-         background: linear-gradient(90deg, var(--main-color), var(--orange));
-         height: 100%;
-         border-radius: 1rem;
-         transition: width 0.5s ease;
-      }
-
-      .progress-text {
-         font-size: 1.1rem;
-         color: var(--light-color);
-         margin-top: 0.5rem;
-      }
-
-      /* Quick Actions */
-      .quick-actions {
-         position: fixed;
-         bottom: 2rem;
-         right: 2rem;
-         z-index: 1000;
-      }
-
-      .quick-action-btn {
-         display: flex;
-         align-items: center;
-         justify-content: center;
-         width: 60px;
-         height: 60px;
-         background: var(--main-color);
-         color: white;
-         border-radius: 50%;
-         box-shadow: 0 4px 15px rgba(0,0,0,0.2);
-         transition: all 0.3s ease;
-         margin-bottom: 1rem;
-         text-decoration: none;
-         font-size: 1.5rem;
-      }
-
-      .quick-action-btn:hover {
-         transform: scale(1.1);
-         box-shadow: 0 6px 20px rgba(0,0,0,0.3);
-      }
-
-      /* Welcome Section */
-      .welcome-section {
-         background: linear-gradient(135deg, var(--main-color), var(--orange));
-         color: white;
-         padding: 3rem 2rem;
-         border-radius: 1rem;
-         margin-bottom: 3rem;
-         text-align: center;
-         position: relative;
-         overflow: hidden;
-      }
-
-      .welcome-section::before {
-         content: '';
-         position: absolute;
-         top: 0;
-         left: 0;
-         right: 0;
-         bottom: 0;
-         background: rgba(0, 0, 0, 0.1);
-         z-index: 1;
-      }
-
-      .welcome-section > * {
-         position: relative;
-         z-index: 2;
-      }
-
-      .welcome-title {
-         font-size: 2.8rem;
-         margin: 0 0 1rem 0;
-         text-shadow: 0 2px 4px rgba(0,0,0,0.3);
-         font-weight: 700;
-      }
-
-      .welcome-subtitle {
-         font-size: 1.4rem;
-         text-shadow: 0 1px 2px rgba(0,0,0,0.3);
-         margin: 0;
-         font-weight: 400;
-      }
-
-      .current-time {
-         font-size: 1.2rem;
-         opacity: 0.9;
-         margin-top: 1.5rem;
-         text-shadow: 0 1px 2px rgba(0,0,0,0.3);
-         font-weight: 500;
-      }
-
-      /* Empty States */
-      .empty-state {
-         text-align: center;
-         padding: 4rem 2rem;
-         color: var(--light-color);
-      }
-
-      .empty-icon {
-         font-size: 4rem;
-         margin-bottom: 1rem;
-         opacity: 0.5;
-      }
-
-      .empty-title {
-         font-size: 1.8rem;
-         margin-bottom: 0.5rem;
-         color: var(--black);
-      }
-
-      .empty-text {
-         font-size: 1.2rem;
-         line-height: 1.6;
-      }
-
-      /* Responsive Design */
-      @media (max-width: 768px) {
-         .dashboard-stats {
-            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-            gap: 1.5rem;
-         }
-
-         .stat-card {
-            padding: 2rem 1.5rem;
-            min-height: 120px;
-         }
-
-         .stat-number {
-            font-size: 2.8rem;
-         }
-
-         .stat-label {
-            font-size: 1.2rem;
-         }
-
-         .stat-icon {
-            font-size: 2.3rem;
-         }
-
-         .timeline-filters {
-            grid-template-columns: 1fr;
-            gap: 1.5rem;
-         }
-
-         .quick-filters {
-            justify-content: center;
-         }
-
-         .assignment-grid {
-            grid-template-columns: 1fr;
-            padding: 1rem;
-         }
-
-         .assignment-meta {
-            grid-template-columns: 1fr;
-         }
-
-         .course-grid {
-            grid-template-columns: 1fr;
-         }
-
-         .quick-actions {
-            bottom: 1rem;
-            right: 1rem;
-         }
-
-         .welcome-title {
-            font-size: 2.2rem;
-         }
-      }
-
-      @media (max-width: 480px) {
-         .dashboard-stats {
-            grid-template-columns: 1fr;
-         }
-
-         .stat-card {
-            padding: 1.8rem 1.2rem;
-            min-height: 110px;
-         }
-
-         .stat-number {
-            font-size: 2.5rem;
-         }
-
-         .stat-label {
-            font-size: 1.1rem;
-         }
-
-         .stat-icon {
-            font-size: 2rem;
-         }
-
-         .timeline-filters {
-            padding: 1rem;
-         }
-
-         .quick-filter {
-            padding: 0.5rem 0.8rem;
-            font-size: 1rem;
-         }
-
-         .filter-label {
-            font-size: 1.1rem;
-         }
-
-         .timeline-filters select,
-         .timeline-filters input[type="text"] {
-            font-size: 1.1rem;
-            padding: 0.7rem;
-         }
-
-         .welcome-title {
-            font-size: 1.8rem;
-         }
-
-         .welcome-subtitle {
-            font-size: 1.2rem;
-         }
-      }
-
-      /* Animation Classes */
-      .fade-in {
-         animation: fadeIn 0.6s ease-in-out;
-      }
-
-      @keyframes fadeIn {
-         from { 
-            opacity: 0; 
-            transform: translateY(30px); 
-         }
-         to { 
-            opacity: 1; 
-            transform: translateY(0); 
-         }
-      }
-
-      .slide-in {
-         animation: slideIn 0.4s ease-out;
-      }
-
-      @keyframes slideIn {
-         from { 
-            transform: translateX(-30px); 
-            opacity: 0; 
-         }
-         to { 
-            transform: translateX(0); 
-            opacity: 1; 
-         }
-      }
-
-      /* Stagger animation delays */
-      .stat-card:nth-child(1) { animation-delay: 0.1s; }
-      .stat-card:nth-child(2) { animation-delay: 0.2s; }
-      .stat-card:nth-child(3) { animation-delay: 0.3s; }
-      .stat-card:nth-child(4) { animation-delay: 0.4s; }
-
-      .assignment-card:nth-child(1) { animation-delay: 0.1s; }
-      .assignment-card:nth-child(2) { animation-delay: 0.2s; }
-      .assignment-card:nth-child(3) { animation-delay: 0.3s; }
-      .assignment-card:nth-child(4) { animation-delay: 0.4s; }
-      .assignment-card:nth-child(5) { animation-delay: 0.5s; }
-   </style>
 </head>
 <body>
     <form id="form1" runat="server">
@@ -776,30 +137,32 @@
         </div>
 
         <div class="timeline-filters">
-            <div class="filter-group">
-                <label class="filter-label">Filter by Status:</label>
-                <div class="quick-filters">
-                    <div class="quick-filter active" data-filter="all">All</div>
-                    <div class="quick-filter" data-filter="pending">Pending</div>
-                    <div class="quick-filter" data-filter="submitted">Submitted</div>
-                    <div class="quick-filter" data-filter="overdue">Overdue</div>
-                    <div class="quick-filter" data-filter="graded">Graded</div>
+            <div class="filter-row">
+                <div class="filter-group">
+                    <label class="filter-label">Filter by Status:</label>
+                    <div class="quick-filters">
+                        <div class="quick-filter active" data-filter="all">All</div>
+                        <div class="quick-filter" data-filter="pending">Pending</div>
+                        <div class="quick-filter" data-filter="submitted">Submitted</div>
+                        <div class="quick-filter" data-filter="overdue">Overdue</div>
+                        <div class="quick-filter" data-filter="graded">Graded</div>
+                    </div>
                 </div>
-            </div>
 
-            <div class="filter-group">
-                <label class="filter-label">Sort by:</label>
-                <select class="box select" id="sortSelect">
-                    <option value="dueDate">Due Date</option>
-                    <option value="course">Course</option>
-                    <option value="status">Status</option>
-                    <option value="created">Recently Added</option>
-                </select>
-            </div>
+                <div class="filter-group">
+                    <label class="filter-label">Sort by:</label>
+                    <select class="box select" id="sortSelect">
+                        <option value="dueDate">Due Date</option>
+                        <option value="course">Course</option>
+                        <option value="status">Status</option>
+                        <option value="title">Title</option>
+                    </select>
+                </div>
 
-            <div class="filter-group">
-                <label class="filter-label">Search:</label>
-                <input type="text" class="box search-input" id="assignmentSearch" placeholder="Search assignments..." />
+                <div class="filter-group">
+                    <label class="filter-label">Search:</label>
+                    <input type="text" class="box search-input" id="assignmentSearch" placeholder="Search assignments..." />
+                </div>
             </div>
         </div>
 
@@ -808,9 +171,10 @@
             <asp:Repeater ID="assignmentRepeater" runat="server">
                 <ItemTemplate>
                     <div class="assignment-card slide-in" 
-                         data-status='<%# Eval("Status").ToString().ToLower() %>'
+                         data-status='<%# GetNormalizedStatus(Eval("Status")) %>'
                          data-course='<%# Eval("CourseName") %>'
-                         data-due='<%# Eval("DueDate", "{0:yyyy-MM-dd}") %>'>
+                         data-due='<%# Eval("DueDate", "{0:yyyy-MM-dd}") %>'
+                         data-title='<%# Eval("Title") %>'>
                         
                         <div class="assignment-header">
                             <h3 class="assignment-title"><%# Eval("Title") %></h3>
@@ -1006,7 +370,6 @@
         const quickFilters = document.querySelectorAll('.quick-filter');
         const sortSelect = document.getElementById('sortSelect');
         const searchInput = document.getElementById('assignmentSearch');
-        const assignmentCards = document.querySelectorAll('.assignment-card');
 
         // Quick filter functionality
         quickFilters.forEach(filter => {
@@ -1036,6 +399,7 @@
 
     function filterAssignments(status) {
         const cards = document.querySelectorAll('.assignment-card');
+        let visibleCount = 0;
 
         cards.forEach(card => {
             const cardStatus = card.getAttribute('data-status');
@@ -1043,13 +407,14 @@
             if (status === 'all' || cardStatus === status) {
                 card.style.display = 'block';
                 card.classList.add('slide-in');
+                visibleCount++;
             } else {
                 card.style.display = 'none';
                 card.classList.remove('slide-in');
             }
         });
 
-        updateEmptyState();
+        updateEmptyState(visibleCount);
     }
 
     function sortAssignments(sortBy) {
@@ -1059,11 +424,15 @@
         cards.sort((a, b) => {
             switch (sortBy) {
                 case 'dueDate':
-                    return new Date(a.getAttribute('data-due')) - new Date(b.getAttribute('data-due'));
+                    const dateA = new Date(a.getAttribute('data-due'));
+                    const dateB = new Date(b.getAttribute('data-due'));
+                    return dateA - dateB;
                 case 'course':
                     return a.getAttribute('data-course').localeCompare(b.getAttribute('data-course'));
                 case 'status':
                     return a.getAttribute('data-status').localeCompare(b.getAttribute('data-status'));
+                case 'title':
+                    return a.getAttribute('data-title').localeCompare(b.getAttribute('data-title'));
                 default:
                     return 0;
             }
@@ -1076,29 +445,32 @@
     function searchAssignments(query) {
         const cards = document.querySelectorAll('.assignment-card');
         const searchTerm = query.toLowerCase();
+        let visibleCount = 0;
 
         cards.forEach(card => {
-            const title = card.querySelector('.assignment-title').textContent.toLowerCase();
-            const course = card.querySelector('.assignment-course').textContent.toLowerCase();
+            const title = (card.getAttribute('data-title') || '').toLowerCase();
+            const course = (card.getAttribute('data-course') || '').toLowerCase();
 
-            if (title.includes(searchTerm) || course.includes(searchTerm)) {
+            if (!query || title.includes(searchTerm) || course.includes(searchTerm)) {
                 card.style.display = 'block';
+                visibleCount++;
             } else {
                 card.style.display = 'none';
             }
         });
 
-        updateEmptyState();
+        updateEmptyState(visibleCount);
     }
 
-    function updateEmptyState() {
-        const visibleCards = document.querySelectorAll('.assignment-card[style*="block"], .assignment-card:not([style*="none"])');
+    function updateEmptyState(visibleCount) {
         const emptyState = document.querySelector('.empty-state');
 
-        if (visibleCards.length === 0 && emptyState) {
-            emptyState.style.display = 'block';
-        } else if (emptyState) {
-            emptyState.style.display = 'none';
+        if (emptyState) {
+            if (visibleCount === 0) {
+                emptyState.style.display = 'block';
+            } else {
+                emptyState.style.display = 'none';
+            }
         }
     }
 
