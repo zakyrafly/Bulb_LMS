@@ -61,7 +61,7 @@
       <img src="images/pic-1.jpg" class="image" alt="">
       <h3 class="name"><asp:Label ID="lblSidebarName" runat="server" Text="Zaky Rafly"></asp:Label></h3>
       <p class="role"><asp:Label ID="lblSidebarRole" runat="server" Text="student"></asp:Label></p>
-      <a href="profile.html" class="btn">view profile</a>
+      <a href="profile.aspx" class="btn">view profile</a>
    </div>
 
    <nav class="navbar">

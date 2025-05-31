@@ -566,7 +566,7 @@
                         <ItemTemplate>
                             <div class="activity-item">
                                 <div class="activity-icon <%# Eval("ActivityType").ToString().ToLower() %>">
-                                    <i class="fas <%# GetActivityIcon(Eval("ActivityType")) %>"></i>
+                                    <i class="fas <%# ((assignmentDraft1.profile)Page).GetActivityIcon(Eval("ActivityType")) %>"></i>
                                 </div>
                                 <div class="activity-content">
                                     <h4><%# Eval("ActivityTitle") %></h4>
@@ -602,7 +602,7 @@
     window.onload = function() {
         var messageLabel = document.getElementById('<%= lblMessage.ClientID %>');
         if (messageLabel && messageLabel.innerText.trim() !== '') {
-            setTimeout(function() {
+            setTimeout(function () {
                 messageLabel.style.display = 'none';
             }, 5000);
         }
