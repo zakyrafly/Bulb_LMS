@@ -203,55 +203,26 @@ namespace assignmentDraft1
             string cs = ConfigurationManager.ConnectionStrings["dbConnection"].ConnectionString;
             using (SqlConnection con = new SqlConnection(cs))
             {
-                con.Open();
-
-                // Get lecturer statistics
-                SqlCommand lecturerStatsCmd = new SqlCommand(@"
-                    SELECT 
-                        COUNT(DISTINCT M.ModuleID) AS ModuleCount,
-                        COUNT(DISTINCT UC.UserID) AS StudentCount,
-                        COUNT(DISTINCT A.AssignmentID) AS AssignmentCount
-                    FROM Lecturers L
-                    JOIN Modules M ON L.LecturerID = M.LecturerID
-                    JOIN Courses C ON M.CourseID = C.CourseID
-                    LEFT JOIN UserCourses UC ON C.CourseID = UC.CourseID
-                    LEFT JOIN Assignments A ON M.ModuleID = A.ModuleID AND A.IsActive = 1
-                    WHERE L.Email = @Email", con);
-                lecturerStatsCmd.Parameters.AddWithValue("@Email", Session["email"].ToString());
-
-                SqlDataReader lecturerStatsReader = lecturerStatsCmd.ExecuteReader();
-                if (lecturerStatsReader.Read())
+                try
                 {
-                    lblModuleCount.Text = lecturerStatsReader["ModuleCount"] != DBNull.Value ?
-                                        lecturerStatsReader["ModuleCount"].ToString() : "0";
-                    lblStudentCount.Text = lecturerStatsReader["StudentCount"] != DBNull.Value ?
-                                         lecturerStatsReader["StudentCount"].ToString() : "0";
-                    lblCreatedAssignments.Text = lecturerStatsReader["AssignmentCount"] != DBNull.Value ?
-                                                lecturerStatsReader["AssignmentCount"].ToString() : "0";
+                    con.Open();
+
+                    // Simple stats query that works - just module count
+                    SqlCommand statsCmd = new SqlCommand(@"
+                SELECT COUNT(*) AS ModuleCount
+                FROM Lecturers L
+                INNER JOIN Modules M ON L.LecturerID = M.LecturerID
+                WHERE L.Email = @Email", con);
+                    statsCmd.Parameters.AddWithValue("@Email", Session["email"].ToString());
+
+                    object result = statsCmd.ExecuteScalar();
+                    lblModuleCount.Text = result?.ToString() ?? "0";
                 }
-                lecturerStatsReader.Close();
-
-                // Get teaching modules
-                SqlCommand modulesCmd = new SqlCommand(@"
-                    SELECT 
-                        M.Title AS ModuleTitle,
-                        M.Description,
-                        C.CourseName,
-                        COUNT(A.AssignmentID) AS AssignmentCount
-                    FROM Lecturers L
-                    JOIN Modules M ON L.LecturerID = M.LecturerID
-                    JOIN Courses C ON M.CourseID = C.CourseID
-                    LEFT JOIN Assignments A ON M.ModuleID = A.ModuleID AND A.IsActive = 1
-                    WHERE L.Email = @Email
-                    GROUP BY M.ModuleID, M.Title, M.Description, C.CourseName", con);
-                modulesCmd.Parameters.AddWithValue("@Email", Session["email"].ToString());
-
-                SqlDataAdapter modulesDa = new SqlDataAdapter(modulesCmd);
-                DataTable modulesDt = new DataTable();
-                modulesDa.Fill(modulesDt);
-
-                lecturerModulesRepeater.DataSource = modulesDt;
-                lecturerModulesRepeater.DataBind();
+                catch (Exception ex)
+                {
+                    ShowMessage("Error loading lecturer data: " + ex.Message, "red");
+                    lblModuleCount.Text = "0";
+                }
             }
         }
 
