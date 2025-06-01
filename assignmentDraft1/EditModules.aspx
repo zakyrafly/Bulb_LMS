@@ -399,11 +399,12 @@
                         <div class="module-description">
                             <%# Eval("Description") %>
                         </div>
+                      <!-- Updating the "Edit Module" button in the repeater -->
                         <div class="module-actions">
                             <asp:LinkButton runat="server" CssClass="btn-edit" 
-                                CommandName="Edit" CommandArgument='<%# Eval("ModuleID") %>' 
-                                OnClick="BtnEditModule_Click">
-                                <i class="fas fa-edit"></i> Edit Module
+                                CommandName="ManageLessons" CommandArgument='<%# Eval("ModuleID") %>' 
+                                OnClick="BtnManageLessons_Click">
+                                <i class="fas fa-book-open"></i> Manage Lessons
                             </asp:LinkButton>
                             <asp:LinkButton runat="server" CssClass="btn-delete" 
                                 CommandName="Delete" CommandArgument='<%# Eval("ModuleID") %>' 

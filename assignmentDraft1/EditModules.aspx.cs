@@ -542,6 +542,24 @@ namespace assignmentDraft1
             return true;
         }
 
+        // Add this new method to handle the "Manage Lessons" button click
+        protected void BtnManageLessons_Click(object sender, EventArgs e)
+        {
+            try
+            {
+                LinkButton btn = (LinkButton)sender;
+                int moduleId = Convert.ToInt32(btn.CommandArgument);
+
+                // Redirect to the ManageLessons.aspx page with moduleId and courseId parameters
+                Response.Redirect($"ManageLessons.aspx?moduleId={moduleId}&courseId={courseId}");
+            }
+            catch (Exception ex)
+            {
+                ShowMessage("Error navigating to lessons management: " + ex.Message, "error");
+            }
+        }
+
+
         private void ClearModuleForm()
         {
             hfModuleID.Value = "";
