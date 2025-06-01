@@ -295,7 +295,7 @@
 
 <header class="header">
    <section class="flex">
-      <a href="homeWebform.aspx" class="logo">Bulb</a>
+      <a href="teacherWebform.aspx" class="logo">Bulb</a>
       
       <asp:Panel runat="server" CssClass="search-form">
           <asp:TextBox ID="txtSearch" runat="server" CssClass="search-input" placeholder="Search..." MaxLength="100" />
