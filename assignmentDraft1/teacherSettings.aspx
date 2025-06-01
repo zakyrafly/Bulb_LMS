@@ -248,10 +248,8 @@
       <a href="profile.aspx" class="btn">view profile</a>
    </div>
    <nav class="navbar">
-      <a href="teacherDashboard.aspx"><i class="fas fa-tachometer-alt"></i><span>Dashboard</span></a>
-      <a href="myCourses.aspx"><i class="fas fa-graduation-cap"></i><span>My Courses</span></a>
-      <a href="createAssignment.aspx"><i class="fas fa-tasks"></i><span>Assignments</span></a>
-      <a href="gradeSubmissions.aspx"><i class="fas fa-check-square"></i><span>Grade Submissions</span></a>
+      <a href="TeacherWebform.aspx"><i class="fas fa-home"></i><span>Dashboard</span></a>
+      <a href="assignments.aspx"><i class="fas fa-tasks"></i><span>Assignments</span></a>
       <a href="teacherSettings.aspx" class="active"><i class="fas fa-cog"></i><span>Settings</span></a>
       <a href="loginWebform.aspx"><i class="fas fa-sign-out-alt"></i><span>Logout</span></a>
    </nav>

@@ -141,7 +141,9 @@
 
 <header class="header">
    <section class="flex">
-      <a href="teacherWebform.aspx" class="logo">Bulb</a>
+      <a href="teacherDashboard.aspx" class="logo">
+    <i class="fas fa-chalkboard-teacher"></i> Bulb Teacher
+</a>
       
       <asp:Panel runat="server" CssClass="search-form">
           <asp:TextBox ID="txtSearch" runat="server" CssClass="search-input" placeholder="Search assignments..." MaxLength="100" />
@@ -184,7 +186,7 @@
       <a href="ViewStudent.aspx"><i class="fas fa-users"></i><span>Students</span></a>
       <a href="assignments.aspx" class="active"><i class="fas fa-tasks"></i><span>Assignments</span></a>
       <a href="analytics.aspx"><i class="fas fa-chart-line"></i><span>Analytics</span></a>
-      <a href="settings.aspx"><i class="fas fa-cog"></i><span>Settings</span></a>
+      <a href="teacherSettings.aspx"><i class="fas fa-cog"></i><span>Settings</span></a>
       <a href="loginWebform.aspx"><i class="fas fa-sign-out-alt"></i><span>Logout</span></a>
    </nav>
 </div>
