@@ -101,6 +101,7 @@
     <Content Include="systemReports.aspx" />
     <Content Include="systemSettings.aspx" />
     <Content Include="TeacherGradeAssignment.aspx" />
+    <Content Include="teacherSettings.aspx" />
     <Content Include="TeacherWebform.aspx" />
     <Content Include="ViewStudent.aspx" />
     <Content Include="Web.config" />
@@ -289,6 +290,13 @@
     </Compile>
     <Compile Include="TeacherGradeAssignment.aspx.designer.cs">
       <DependentUpon>TeacherGradeAssignment.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="teacherSettings.aspx.cs">
+      <DependentUpon>teacherSettings.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="teacherSettings.aspx.designer.cs">
+      <DependentUpon>teacherSettings.aspx</DependentUpon>
     </Compile>
     <Compile Include="TeacherWebform.aspx.cs">
       <DependentUpon>TeacherWebform.aspx</DependentUpon>

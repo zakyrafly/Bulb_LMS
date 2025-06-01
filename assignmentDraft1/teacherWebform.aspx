@@ -792,7 +792,9 @@
         <!-- Header -->
         <header class="header">
             <section class="flex">
-                <a href="TeacherWebform.aspx" class="logo">Bulb</a>
+                <a href="teacherDashboard.aspx" class="logo">
+    <i class="fas fa-chalkboard-teacher"></i> Bulb Teacher
+</a>
                 <asp:Panel runat="server" CssClass="search-form">
                     <asp:TextBox runat="server" ID="txtSearch" CssClass="search-input" placeholder="Search courses, students..." />
                     <asp:LinkButton runat="server" ID="BtnSearch" CssClass="inline-btn search-btn" OnClick="BtnSearch_Click">
@@ -836,7 +838,7 @@
                 <a href="assignments.aspx"><i class="fas fa-tasks"></i><span>Assignments</span></a>
                 <a href="ViewStudent.aspx"><i class="fas fa-users"></i><span>Students</span></a>
                 <a href="analytics.aspx"><i class="fas fa-chart-line"></i><span>Analytics</span></a>
-                <a href="TeacherSettings.aspx"><i class="fas fa-cog"></i><span>Settings</span></a>
+                <a href="teacherSettings.aspx"><i class="fas fa-cog"></i><span>Settings</span></a>
                 <a href="loginWebform.aspx"><i class="fas fa-sign-out-alt"></i><span>Logout</span></a>
             </nav>
         </div>
@@ -1121,13 +1123,10 @@
 
         <!-- Quick Actions -->
         <div class="quick-actions">
-            <button type="button" class="quick-action-btn primary" title="Add New Course" onclick="openAddCourseModal()">
-                <i class="fas fa-plus"></i>
-            </button>
-            <a href="assignments.aspx" class="quick-action-btn secondary" title="Manage Assignments">
+            <a href="assignments.aspx" class="quick-action-btn primary" title="Manage Assignments">
                 <i class="fas fa-tasks"></i>
             </a>
-            <a href="manageStudents.aspx" class="quick-action-btn secondary" title="Manage Students">
+            <a href="ViewStudent.aspx" class="quick-action-btn secondary" title="Manage Students">
                 <i class="fas fa-users"></i>
             </a>
         </div>
