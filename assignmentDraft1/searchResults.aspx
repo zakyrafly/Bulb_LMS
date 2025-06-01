@@ -48,24 +48,26 @@
 
 </header>   
         <div class="side-bar">
-            <div id="close-btn">
-                <i class="fas fa-times"></i>
-            </div>
-            <div class="profile">
-                <img src="images/pic-1.jpg" class="image" alt="">
-                <h3 class="name"><asp:Label ID="lblSidebarName" runat="server" Text="Zaky Rafly"></asp:Label></h3>
-                <p class="role"><asp:Label ID="lblSidebarRole" runat="server" Text="student"></asp:Label></p>
-                <a href="profile.aspx" class="btn">view profile</a>
-            </div>
-            <nav class="navbar">
-                <a href="homeWebform.aspx"><i class="fas fa-home"></i><span>home</span></a>
-                <a href="about.html"><i class="fas fa-question"></i><span>about</span></a>
-                <a href="courses.html"><i class="fas fa-graduation-cap"></i><span>courses</span></a>
-                <a href="teachers.html"><i class="fas fa-chalkboard-user"></i><span>teachers</span></a>
-                <a href="contact.html"><i class="fas fa-headset"></i><span>contact us</span></a>
-                <a href="loginWebform.aspx"><span>Log out</span></a>
-            </nav>
-        </div>
+   <div id="close-btn">
+      <i class="fas fa-times"></i>
+   </div>
+
+   <div class="profile">
+      <img src="images/pic-1.jpg" class="image" alt="">
+      <h3 class="name"><asp:Label ID="lblSidebarName" runat="server" Text="Student Name"></asp:Label></h3>
+      <p class="role"><asp:Label ID="lblSidebarRole" runat="server" Text="student"></asp:Label></p>
+      <a href="profile.aspx" class="btn">view profile</a>
+   </div>
+
+    <nav class="navbar">
+          <a href="homeWebform.aspx" class="active"><i class="fas fa-home"></i><span>Home</span></a>
+          <a href="studentLessons.aspx"><i class="fas fa-graduation-cap"></i><span>My Courses</span></a>
+          <a href="student-assignments.aspx"><i class="fas fa-tasks"></i><span>Assignments</span></a>
+          <a href="calendar.aspx"><i class="fas fa-calendar"></i><span>Calendar</span></a>
+          <a href="profile.aspx"><i class="fas fa-user"></i><span>Profile</span></a>
+          <a href="loginWebform.aspx"><i class="fas fa-sign-out-alt"></i><span>Logout</span></a>
+       </nav>
+</div>
         <section class="courses">
             <h1 class="heading">Search Results</h1>
             <div class="box-container">
