@@ -836,7 +836,7 @@
                 <a href="assignments.aspx"><i class="fas fa-tasks"></i><span>Assignments</span></a>
                 <a href="ViewStudent.aspx"><i class="fas fa-users"></i><span>Students</span></a>
                 <a href="analytics.aspx"><i class="fas fa-chart-line"></i><span>Analytics</span></a>
-                <a href="TeacherSettings.aspx"><i class="fas fa-cog"></i><span>Settings</span></a>
+                <a href="teacherSettings.aspx"><i class="fas fa-cog"></i><span>Settings</span></a>
                 <a href="loginWebform.aspx"><i class="fas fa-sign-out-alt"></i><span>Logout</span></a>
             </nav>
         </div>
