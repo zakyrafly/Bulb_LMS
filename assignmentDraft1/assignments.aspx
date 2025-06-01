@@ -181,8 +181,7 @@
    </div>
    <nav class="navbar">
       <a href="teacherWebform.aspx"><i class="fas fa-home"></i><span>Dashboard</span></a>
-      <a href="addCourse.aspx"><i class="fas fa-plus"></i><span>Add Course</span></a>
-      <a href="manageStudents.aspx"><i class="fas fa-users"></i><span>Students</span></a>
+      <a href="ViewStudent.aspx"><i class="fas fa-users"></i><span>Students</span></a>
       <a href="assignments.aspx" class="active"><i class="fas fa-tasks"></i><span>Assignments</span></a>
       <a href="analytics.aspx"><i class="fas fa-chart-line"></i><span>Analytics</span></a>
       <a href="settings.aspx"><i class="fas fa-cog"></i><span>Settings</span></a>

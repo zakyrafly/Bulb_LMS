@@ -834,9 +834,9 @@
             <nav class="navbar">
                 <a href="TeacherWebform.aspx" class="active"><i class="fas fa-home"></i><span>Dashboard</span></a>
                 <a href="assignments.aspx"><i class="fas fa-tasks"></i><span>Assignments</span></a>
-                <a href="manageStudents.aspx"><i class="fas fa-users"></i><span>Students</span></a>
+                <a href="ViewStudent.aspx"><i class="fas fa-users"></i><span>Students</span></a>
                 <a href="analytics.aspx"><i class="fas fa-chart-line"></i><span>Analytics</span></a>
-                <a href="settings.aspx"><i class="fas fa-cog"></i><span>Settings</span></a>
+                <a href="TeacherSettings.aspx"><i class="fas fa-cog"></i><span>Settings</span></a>
                 <a href="loginWebform.aspx"><i class="fas fa-sign-out-alt"></i><span>Logout</span></a>
             </nav>
         </div>
@@ -911,9 +911,6 @@
         <section class="courses">
             <div class="section-header" style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 2rem;">
                 <h1 class="heading"><i class="fas fa-graduation-cap"></i> My Courses</h1>
-                <button type="button" class="inline-btn" onclick="openAddCourseModal()">
-                    <i class="fas fa-plus"></i> Add New Course
-                </button>
             </div>
             
             <!-- Course filtering -->
@@ -1055,9 +1052,9 @@
                                 </div>
                                 <div class="progress-text assignment-progress-text">0% submitted</div>
                                 
-                                <a href='gradeAssignment.aspx?assignmentID=<%# Eval("AssignmentID") %>' class="inline-btn">
+                                <a href='TeacherGradeAssignment.aspx?assignmentID=<%# Eval("AssignmentID") %>' class="inline-btn">
                                     <i class="fas fa-check-circle"></i> Grade Submissions
-                                </a>
+                                  </a>
                             </div>
                         </div>
                     </ItemTemplate>
