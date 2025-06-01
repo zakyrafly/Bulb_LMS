@@ -299,7 +299,7 @@ namespace assignmentDraft1
                     DeleteAssignment(assignmentId);
                     break;
                 case "Grade":
-                    Response.Redirect($"gradeAssignment.aspx?assignmentID={assignmentId}");
+                    Response.Redirect($"TeacherGradeAssignment.aspx?assignmentID={assignmentId}");
                     break;
             }
         }

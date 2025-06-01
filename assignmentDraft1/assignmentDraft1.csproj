@@ -96,7 +96,9 @@
     <Content Include="student-assignments.aspx" />
     <Content Include="systemReports.aspx" />
     <Content Include="systemSettings.aspx" />
+    <Content Include="TeacherGradeAssignment.aspx" />
     <Content Include="TeacherWebform.aspx" />
+    <Content Include="ViewStudent.aspx" />
     <Content Include="watch-video.html" />
     <Content Include="Web.config" />
     <Content Include="loginWebform.aspx" />
@@ -250,12 +252,26 @@
     <Compile Include="systemSettings.aspx.designer.cs">
       <DependentUpon>systemSettings.aspx</DependentUpon>
     </Compile>
+    <Compile Include="TeacherGradeAssignment.aspx.cs">
+      <DependentUpon>TeacherGradeAssignment.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="TeacherGradeAssignment.aspx.designer.cs">
+      <DependentUpon>TeacherGradeAssignment.aspx</DependentUpon>
+    </Compile>
     <Compile Include="TeacherWebform.aspx.cs">
       <DependentUpon>TeacherWebform.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
     </Compile>
     <Compile Include="TeacherWebform.aspx.designer.cs">
       <DependentUpon>TeacherWebform.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="ViewStudent.aspx.cs">
+      <DependentUpon>ViewStudent.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="ViewStudent.aspx.designer.cs">
+      <DependentUpon>ViewStudent.aspx</DependentUpon>
     </Compile>
   </ItemGroup>
   <ItemGroup>
