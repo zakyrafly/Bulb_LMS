@@ -342,19 +342,19 @@
 
    <div class="profile">
       <img src="images/pic-1.jpg" class="image" alt="">
-      <h3 class="name"><asp:Label ID="lblSidebarName" runat="server" Text=""></asp:Label></h3>
-      <p class="role"><asp:Label ID="lblSidebarRole" runat="server" Text=""></asp:Label></p>
+      <h3 class="name"><asp:Label ID="lblSidebarName" runat="server" Text="Student Name"></asp:Label></h3>
+      <p class="role"><asp:Label ID="lblSidebarRole" runat="server" Text="student"></asp:Label></p>
       <a href="profile.aspx" class="btn">view profile</a>
    </div>
 
-   <nav class="navbar">
-      <a href="homeWebform.aspx"><i class="fas fa-home"></i><span>Home</span></a>
-      <a href="courses.html"><i class="fas fa-graduation-cap"></i><span>My Courses</span></a>
-      <a href="student-assignments.aspx" class="active"><i class="fas fa-tasks"></i><span>Assignments</span></a>
-      <a href="calendar.html"><i class="fas fa-calendar"></i><span>Calendar</span></a>
-      <a href="profile.aspx"><i class="fas fa-user"></i><span>Profile</span></a>
-      <a href="loginWebform.aspx"><i class="fas fa-sign-out-alt"></i><span>Logout</span></a>
-   </nav>
+    <nav class="navbar">
+          <a href="homeWebform.aspx" class="active"><i class="fas fa-home"></i><span>Home</span></a>
+          <a href="studentLessons.aspx"><i class="fas fa-graduation-cap"></i><span>My Courses</span></a>
+          <a href="student-assignments.aspx"><i class="fas fa-tasks"></i><span>Assignments</span></a>
+          <a href="calendar.aspx"><i class="fas fa-calendar"></i><span>Calendar</span></a>
+          <a href="profile.aspx"><i class="fas fa-user"></i><span>Profile</span></a>
+          <a href="loginWebform.aspx"><i class="fas fa-sign-out-alt"></i><span>Logout</span></a>
+       </nav>
 </div>
 
 <section class="course-content">
