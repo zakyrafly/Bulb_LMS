@@ -139,9 +139,13 @@
                         </div>
                         
                         <div class="course-actions">
+                            <asp:LinkButton runat="server" CssClass="action-btn btn-manage" 
+                                          CommandName="ManageModules" CommandArgument='<%# Eval("CourseID") %>'>
+                                <i class="fas fa-th-list"></i> Modules
+                            </asp:LinkButton>
                             <asp:LinkButton runat="server" CssClass="action-btn btn-view" 
                                           CommandName="ViewDetails" CommandArgument='<%# Eval("CourseID") %>'>
-                                <i class="fas fa-eye"></i> View Details
+                                <i class="fas fa-eye"></i> Details
                             </asp:LinkButton>
                             <asp:LinkButton runat="server" CssClass="action-btn btn-edit" 
                                           CommandName="Edit" CommandArgument='<%# Eval("CourseID") %>'>
@@ -313,6 +317,73 @@
         }
     }
 </script>
+
+<style>
+    /* Additional CSS for the new Manage Modules button */
+    .btn-manage {
+        background-color: var(--main-color) !important;
+        color: white !important;
+    }
+    
+    .btn-manage:hover {
+        background-color: #7b3c1d !important;
+        transform: translateY(-2px);
+    }
+    
+    .course-actions {
+        display: flex;
+        gap: 0.5rem;
+        flex-wrap: wrap;
+        justify-content: center;
+        margin-top: 1rem;
+    }
+    
+    .action-btn {
+        padding: 0.6rem 1rem;
+        border: none;
+        border-radius: 0.4rem;
+        cursor: pointer;
+        font-size: 1.2rem;
+        text-decoration: none;
+        display: inline-flex;
+        align-items: center;
+        gap: 0.4rem;
+        transition: all 0.3s;
+        flex: 1;
+        min-width: 70px;
+        justify-content: center;
+    }
+    
+    .btn-view {
+        background-color: var(--admin-primary);
+        color: white;
+    }
+    
+    .btn-view:hover {
+        background-color: #2980b9;
+        transform: translateY(-2px);
+    }
+    
+    .btn-edit {
+        background-color: var(--orange);
+        color: white;
+    }
+    
+    .btn-edit:hover {
+        background-color: #e67e22;
+        transform: translateY(-2px);
+    }
+    
+    .btn-delete {
+        background-color: var(--red);
+        color: white;
+    }
+    
+    .btn-delete:hover {
+        background-color: #c0392b;
+        transform: translateY(-2px);
+    }
+</style>
 
     </form>
 </body>

@@ -68,6 +68,8 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="adminDashboard.aspx" />
+    <Content Include="AdminManageLessons.aspx" />
+    <Content Include="AdminManageModules.aspx" />
     <Content Include="App_Data\Database1.mdf" />
     <Content Include="App_Data\Database1_log.ldf">
       <DependentUpon>Database1.mdf</DependentUpon>
@@ -109,6 +111,20 @@
     </Compile>
     <Compile Include="adminDashboard.aspx.designer.cs">
       <DependentUpon>adminDashboard.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="AdminManageLessons.aspx.cs">
+      <DependentUpon>AdminManageLessons.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="AdminManageLessons.aspx.designer.cs">
+      <DependentUpon>AdminManageLessons.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="AdminManageModules.aspx.cs">
+      <DependentUpon>AdminManageModules.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="AdminManageModules.aspx.designer.cs">
+      <DependentUpon>AdminManageModules.aspx</DependentUpon>
     </Compile>
     <Compile Include="assignment-details.aspx.cs">
       <DependentUpon>assignment-details.aspx</DependentUpon>
