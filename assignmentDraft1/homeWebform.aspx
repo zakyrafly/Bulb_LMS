@@ -57,7 +57,7 @@
 
     <nav class="navbar">
           <a href="homeWebform.aspx" class="active"><i class="fas fa-home"></i><span>Home</span></a>
-          <a href="courses.html"><i class="fas fa-graduation-cap"></i><span>My Courses</span></a>
+          <a href="studentLessons.aspx"><i class="fas fa-graduation-cap"></i><span>My Courses</span></a>
           <a href="student-assignments.aspx"><i class="fas fa-tasks"></i><span>Assignments</span></a>
           <a href="calendar.aspx"><i class="fas fa-calendar"></i><span>Calendar</span></a>
           <a href="profile.aspx"><i class="fas fa-user"></i><span>Profile</span></a>
@@ -285,10 +285,10 @@
 
 <!-- Quick Actions -->
 <div class="quick-actions">
-    <a href="assignments.html" class="quick-action-btn" title="View All Assignments">
+    <a href="student-assignments.aspx" class="quick-action-btn" title="View All Assignments">
         <i class="fas fa-tasks"></i>
     </a>
-    <a href="calendar.html" class="quick-action-btn" title="View Calendar">
+    <a href="calendar.aspx" class="quick-action-btn" title="View Calendar">
         <i class="fas fa-calendar"></i>
     </a>
     <a href="profile.aspx" class="quick-action-btn" title="View Profile">

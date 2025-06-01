@@ -94,6 +94,7 @@
     <Content Include="register.html" />
     <Content Include="searchResults.aspx" />
     <Content Include="student-assignments.aspx" />
+    <Content Include="studentLessons.aspx" />
     <Content Include="systemReports.aspx" />
     <Content Include="systemSettings.aspx" />
     <Content Include="TeacherGradeAssignment.aspx" />
@@ -237,6 +238,13 @@
     </Compile>
     <Compile Include="student-assignments.aspx.designer.cs">
       <DependentUpon>student-assignments.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="studentLessons.aspx.cs">
+      <DependentUpon>studentLessons.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="studentLessons.aspx.designer.cs">
+      <DependentUpon>studentLessons.aspx</DependentUpon>
     </Compile>
     <Compile Include="systemReports.aspx.cs">
       <DependentUpon>systemReports.aspx</DependentUpon>
