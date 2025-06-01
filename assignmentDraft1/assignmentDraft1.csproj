@@ -70,6 +70,7 @@
     <Content Include="adminDashboard.aspx" />
     <Content Include="AdminManageLessons.aspx" />
     <Content Include="AdminManageModules.aspx" />
+    <Content Include="analytics.aspx" />
     <Content Include="App_Data\Database1.mdf" />
     <Content Include="App_Data\Database1_log.ldf">
       <DependentUpon>Database1.mdf</DependentUpon>
@@ -102,7 +103,6 @@
     <Content Include="TeacherGradeAssignment.aspx" />
     <Content Include="TeacherWebform.aspx" />
     <Content Include="ViewStudent.aspx" />
-    <Content Include="watch-video.html" />
     <Content Include="Web.config" />
     <Content Include="loginWebform.aspx" />
   </ItemGroup>
@@ -127,6 +127,13 @@
     </Compile>
     <Compile Include="AdminManageModules.aspx.designer.cs">
       <DependentUpon>AdminManageModules.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="analytics.aspx.cs">
+      <DependentUpon>analytics.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="analytics.aspx.designer.cs">
+      <DependentUpon>analytics.aspx</DependentUpon>
     </Compile>
     <Compile Include="assignment-details.aspx.cs">
       <DependentUpon>assignment-details.aspx</DependentUpon>
